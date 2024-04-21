@@ -1,6 +1,6 @@
 create table "autori" (
     "id" bigint DEFAULT nextval ("autori_id_seg") NOT NULL,
-    "ume" text ,
+    "ime" text ,
     "godine" integer,
     CONSTRAINT "autori_pkey" PRIMARY KEY ("id")
 
