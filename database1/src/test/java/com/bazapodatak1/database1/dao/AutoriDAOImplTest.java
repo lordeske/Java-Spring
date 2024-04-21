@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -28,17 +27,13 @@ public class AutoriDAOImplTest {
     @Test
     public void testCreateAutorGenCorrSQL()
     {
-        Autori autori = Autori.builder()
-                .id(1l)
-                    .ime("Mihajlo")
-                        .godine(20).build();
+        Autori autori = TestDataUtil.createTestAutor();
 
         underTest.create(autori);
 
         verify(jdbcTemplate).update(eq("INSERT INTO autori (id,ime,godine) VALUES (?,?,?)"),
                 eq(1l),eq("Mihajlo"),eq(20));
     }
-
 
 
     @Test

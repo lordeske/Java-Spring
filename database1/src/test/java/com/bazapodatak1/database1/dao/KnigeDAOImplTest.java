@@ -27,11 +27,7 @@ public class KnigeDAOImplTest {
     public void testCreateBookGenCorrSQL()
     {
 
-        Knjige knjiga = Knjige.builder().
-                isbn("1-123-456-7")
-                        .naslov("Mracna Carobnica")
-                                .autor_id(1L)
-                                        .build();
+        Knjige knjiga = TestDataUtil.createTestKnjiga();
 
 
         testObject.create(knjiga);
@@ -40,8 +36,6 @@ public class KnigeDAOImplTest {
                 eq("1-123-456-7"),eq("Mracna Carobnica"),eq(1L));
 
     }
-
-
 
 
     @Test

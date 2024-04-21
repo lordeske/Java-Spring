@@ -1,17 +1,19 @@
 package DAO.impl;
 
 import DAO.AutorDAO;
-import DAO.KnjiaDAO;
 import doomen.Autori;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class AutorDAOImpl implements AutorDAO {
+
+    @Component
+    public class AutorDAOImpl implements AutorDAO {
 
 
 
