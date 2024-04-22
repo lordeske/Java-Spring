@@ -39,11 +39,15 @@ import java.util.Optional;
        return results.stream().findFirst();
     }
 
+    @Override
+    public List<Autori> find() {
+        return jdbcTemplate.query("SELECT id, ime, godine FROM autori",
+                new AutorRowMapper());
+    }
+
 
     public static class AutorRowMapper implements RowMapper<Autori> {
-
-        @Override
-        public Autori mapRow(ResultSet rs, int rowNum) throws SQLException {
+        @Override public Autori mapRow(ResultSet rs, int rowNum) throws SQLException {
             return Autori.builder()
                     .id(rs.getLong("id"))
                     .ime(rs.getString("ime"))

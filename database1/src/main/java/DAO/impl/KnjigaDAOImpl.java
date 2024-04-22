@@ -2,6 +2,7 @@ package DAO.impl;
 
 import DAO.KnjiaDAO;
 import doomen.Knjige;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ public class KnjigaDAOImpl implements KnjiaDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     private  KnjigaDAOImpl(JdbcTemplate jdbcTemplate)
     {
         this.jdbcTemplate= jdbcTemplate;
@@ -36,13 +38,11 @@ public class KnjigaDAOImpl implements KnjiaDAO {
       return results.stream().findFirst();
     }
 
-
-
-
-
-
-
-
+    @Override
+    public List<Knjige> find() {
+       return jdbcTemplate.query("SELECT isbn,naziv, autor_id from Knjige",
+               new KnigreRawMapper());
+    }
 
 
     public static class KnigreRawMapper implements RowMapper {

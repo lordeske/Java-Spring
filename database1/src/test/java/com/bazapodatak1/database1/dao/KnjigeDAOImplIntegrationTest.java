@@ -10,11 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+
 @ExtendWith(SpringExtension.class)
 public class KnjigeDAOImplIntegrationTest {
 
@@ -43,5 +44,38 @@ public class KnjigeDAOImplIntegrationTest {
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(knjige);
     }
+
+
+    @Test
+    public void testThatKnigeMoguBiti()
+    {
+        Autori autori = TestDataUtil.createTestAutor();
+        autorDAO.create(autori);
+
+        Knjige knjiga1= TestDataUtil.createTestKnjigaA();
+        knjiga1.setAutor_id(autori.getId());
+        underTest.create(knjiga1);
+
+        Knjige knjiga2= TestDataUtil.createTestKnjigaA();
+        knjiga2.setAutor_id(autori.getId());
+        underTest.create(knjiga2);
+
+        Knjige knjiga3= TestDataUtil.createTestKnjigaA();
+        knjiga2.setAutor_id(autori.getId());
+        underTest.create(knjiga3);
+
+
+        List<Knjige> result = underTest.find();
+
+        assertThat(result).hasSize(3)
+                .contains(knjiga1,knjiga2,knjiga3);
+
+
+
+
+
+
+    }
+
 
 }

@@ -50,5 +50,15 @@ public class AutoriDAOImplTest {
 
     }
 
+    @Test
+    public void  findManyCorrectSQL()
+    {
+
+        underTest.find();
+        verify(jdbcTemplate).query(eq("SELECT id, ime, godine FROM autori"),
+                ArgumentMatchers.<AutorDAOImpl.AutorRowMapper>any());
+
+    }
+
 
 }

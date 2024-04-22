@@ -54,6 +54,18 @@ public class KnigeDAOImplTest {
 
     }
 
+    @Test
+    public void testThatFindAllSQL()
+    {
+        testObject.find();
+
+        verify(jdbcTemplate).query(eq("SELECT isbn,naziv, autor_id from Knjige"),
+                ArgumentMatchers.<KnjigaDAOImpl.KnigreRawMapper>any());
+
+
+
+    }
+
 
 
 
