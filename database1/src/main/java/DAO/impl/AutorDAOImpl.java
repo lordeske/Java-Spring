@@ -53,6 +53,14 @@ import java.util.Optional;
 
     }
 
+    @Override
+    public void delete(long l) {
+
+        jdbcTemplate.update("DELETE FROM autori WHERE id = ?",
+                l);
+
+    }
+
 
         public static class AutorRowMapper implements RowMapper<Autori> {
         @Override public Autori mapRow(ResultSet rs, int rowNum) throws SQLException {

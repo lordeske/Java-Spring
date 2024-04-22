@@ -74,6 +74,20 @@ public class AutorDAOImplIntegrationTest {
 
     }
 
+    @Test
+    public void testAutorDelete()
+    {
+        Autori autoriA = TestDataUtil.createTestAutorA() ;
+        underTest.create(autoriA);
+
+        underTest.delete(autoriA.getId());
+
+         Optional <Autori> result = underTest.findOne(autoriA.getId());
+         assertThat(result).isEmpty();
+
+
+    }
+
 
 
 

@@ -101,7 +101,7 @@ public class KnjigeDAOImplIntegrationTest {
         assertThat(reslt).isPresent();
         assertThat(reslt).get().isEqualTo(knjiga1);
 
-        
+
 
 
 

@@ -75,4 +75,20 @@ public class AutoriDAOImplTest {
     }
 
 
+
+    @Test
+    public void testDeleteAutor()
+    {
+
+        underTest.delete(1L);
+
+        verify(jdbcTemplate).update("DELETE FROM autori WHERE id = ?",
+                1L);
+
+
+    }
+
+
+
+
 }

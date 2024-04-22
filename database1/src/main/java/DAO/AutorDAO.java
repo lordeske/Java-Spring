@@ -16,4 +16,6 @@ public interface AutorDAO {
     List<Autori> find();
 
     void update(long id, Autori autori);
+
+    void delete(long l);
 }
