@@ -110,6 +110,32 @@ public class KnjigeDAOImplIntegrationTest {
 
 
 
+    @Test
+    public void testKojiBriseIzBaze()
+    {
+
+        Autori autori = TestDataUtil.createTestAutor();
+        autorDAO.create(autori);
+
+        Knjige knjiga1= TestDataUtil.createTestKnjigaA();
+        knjiga1.setAutor_id(autori.getId());
+        underTest.create(knjiga1);
+
+
+        underTest.delete(knjiga1.getIsbn());
+
+
+        Optional <Knjige> result= underTest.findOne(knjiga1.getIsbn());
+
+        assertThat(result)
+                .isEmpty();
+
+        assertThat(result).isEmpty();
+
+
+    }
+
+
 
 
 

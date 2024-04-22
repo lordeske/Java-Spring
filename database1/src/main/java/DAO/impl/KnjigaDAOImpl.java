@@ -52,7 +52,13 @@ public class KnjigaDAOImpl implements KnjiaDAO {
 
     }
 
+    @Override
+    public void delete(String s) {
 
+        jdbcTemplate.update("DELETE FROM knjige WHERE isbn = ?",
+                s);
+
+    }
 
 
     public static class KnigreRawMapper implements RowMapper {

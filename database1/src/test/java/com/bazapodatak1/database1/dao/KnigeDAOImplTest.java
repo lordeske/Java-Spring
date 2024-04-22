@@ -84,6 +84,17 @@ public class KnigeDAOImplTest {
 
 
 
+    @Test
+    public void testKnjigaDelete()
+    {
+
+        testObject.delete("1-123-456-7");
+
+        verify(jdbcTemplate).update("DELETE FROM knjige WHERE isbn = ?",
+                "1-123-456-7");
+
+
+    }
 
 
 }

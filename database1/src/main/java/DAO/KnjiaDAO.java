@@ -18,4 +18,5 @@ public interface KnjiaDAO {
     void update(String l,Knjige knjige);
 
 
+    void delete(String s);
 }
