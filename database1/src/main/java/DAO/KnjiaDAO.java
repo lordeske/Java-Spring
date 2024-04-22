@@ -11,7 +11,11 @@ public interface KnjiaDAO {
     void create(Knjige knjiga);
 
 
-    Optional<Knjige> find(String s);
+    Optional<Knjige> findOne(String s);
 
     List <Knjige> find();
+
+    void update(String l,Knjige knjige);
+
+
 }

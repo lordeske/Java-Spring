@@ -1,6 +1,7 @@
 package com.bazapodatak1.database1.dao;
 
 import DAO.impl.KnjigaDAOImpl;
+import doomen.Autori;
 import doomen.Knjige;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +43,7 @@ public class KnigeDAOImplTest {
     public void testFindSQL()
     {
 
-        testObject.find("1-123-456-7");
+        testObject.findOne("1-123-456-7");
 
         verify(jdbcTemplate).query(eq("SELECT isbn,naziv, autor_id WHERE isbn =? LIMIT 1"),
                 ArgumentMatchers.<KnjigaDAOImpl.KnigreRawMapper>any(),
@@ -62,6 +63,21 @@ public class KnigeDAOImplTest {
         verify(jdbcTemplate).query(eq("SELECT isbn,naziv, autor_id from Knjige"),
                 ArgumentMatchers.<KnjigaDAOImpl.KnigreRawMapper>any());
 
+
+
+    }
+
+
+    @Test
+    public void testThatUpdateBook()
+    {
+
+        Autori autori = TestDataUtil.createTestAutor();
+        Knjige knjige = TestDataUtil.createTestKnjiga();
+        knjige.setAutor_id(autori.getId());
+        testObject.update("1-123-456-7",knjige);
+        verify(jdbcTemplate).update("UPDATE knjige SET isbn= ?, naziv = ?, autor_id = ? WHERE isbn = ?",
+                "1-123-456-7","Mracna Carobnica",1L,"1-123-456-7");
 
 
     }

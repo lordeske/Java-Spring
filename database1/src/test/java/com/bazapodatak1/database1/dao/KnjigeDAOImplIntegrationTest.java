@@ -8,15 +8,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+
 @ExtendWith(SpringExtension.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class KnjigeDAOImplIntegrationTest {
 
     private KnjigaDAOImpl underTest;
@@ -40,14 +45,14 @@ public class KnjigeDAOImplIntegrationTest {
         knjige.setAutor_id(autori.getId());
         underTest.create(knjige);
 
-        Optional<Knjige> result = underTest.find(knjige.getIsbn());
+        Optional<Knjige> result = underTest.findOne(knjige.getIsbn());
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(knjige);
     }
 
 
     @Test
-    public void testThatKnigeMoguBiti()
+    public void testThatKnigeMoguBitiKreiraneIVracenee()
     {
         Autori autori = TestDataUtil.createTestAutor();
         autorDAO.create(autori);
@@ -76,6 +81,36 @@ public class KnjigeDAOImplIntegrationTest {
 
 
     }
+
+
+    @Test
+    public void testKojiUpdatujeKnjie()
+    {
+
+        Autori autori = TestDataUtil.createTestAutor();
+        autorDAO.create(autori);
+
+        Knjige knjiga1= TestDataUtil.createTestKnjigaA();
+        knjiga1.setAutor_id(autori.getId());
+        underTest.create(knjiga1);
+
+        knjiga1.setNaslov("Mali Mrav");
+        underTest.update(knjiga1.getIsbn(), knjiga1);
+
+        Optional<Knjige> reslt = underTest.findOne(knjiga1.getIsbn());
+        assertThat(reslt).isPresent();
+        assertThat(reslt).get().isEqualTo(knjiga1);
+
+        
+
+
+
+
+    }
+
+
+
+
 
 
 }

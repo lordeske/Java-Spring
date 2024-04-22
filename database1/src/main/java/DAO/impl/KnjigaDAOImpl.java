@@ -30,7 +30,7 @@ public class KnjigaDAOImpl implements KnjiaDAO {
     }
 
     @Override
-    public Optional<Knjige> find(String isbn) {
+    public Optional<Knjige> findOne(String isbn) {
       List<Knjige> results =   jdbcTemplate.query("SELECT isbn,naziv, autor_id WHERE isbn =? LIMIT 1",
           new KnigreRawMapper(),isbn);
 
@@ -43,6 +43,16 @@ public class KnjigaDAOImpl implements KnjiaDAO {
        return jdbcTemplate.query("SELECT isbn,naziv, autor_id from Knjige",
                new KnigreRawMapper());
     }
+
+    @Override
+    public void update(String l, Knjige knjige) {
+
+        jdbcTemplate.update("UPDATE knjige SET isbn= ?, naziv = ?, autor_id = ? WHERE isbn = ?",
+               knjige.getIsbn(),knjige.getNaslov(),knjige.getAutor_id(),l );
+
+    }
+
+
 
 
     public static class KnigreRawMapper implements RowMapper {

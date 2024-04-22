@@ -45,8 +45,16 @@ import java.util.Optional;
                 new AutorRowMapper());
     }
 
+    @Override
+    public void update(long id, Autori autori) {
 
-    public static class AutorRowMapper implements RowMapper<Autori> {
+        jdbcTemplate.update("UPDATE autori SET id = ? , ime = ?, godine = ? WHERE id= ?",
+                autori.getId(),autori.getIme(),autori.getGodine(),id);
+
+    }
+
+
+        public static class AutorRowMapper implements RowMapper<Autori> {
         @Override public Autori mapRow(ResultSet rs, int rowNum) throws SQLException {
             return Autori.builder()
                     .id(rs.getLong("id"))

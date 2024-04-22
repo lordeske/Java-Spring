@@ -54,7 +54,27 @@ public class AutorDAOImplIntegrationTest {
         assertThat(autoriLista).hasSize
                 (3).contains(autoriA,autoriB,autoriC);
 
+    }
+
+    @Test
+    public void testThatAutorIsUp()
+    {
+        Autori autoriA = TestDataUtil.createTestAutorA() ;
+        underTest.create(autoriA);
+
+        autoriA.setIme("Milovan");
+        underTest.update(autoriA.getId(),autoriA);
+
+        Optional <Autori> result  = underTest.findOne(autoriA.getId());
+
+        assertThat(result).isPresent();
+        assertThat(result).get().isEqualTo(autoriA);
+
 
 
     }
+
+
+
+
 }

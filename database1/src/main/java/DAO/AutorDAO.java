@@ -14,4 +14,6 @@ public interface AutorDAO {
     Optional<Autori> findOne(long l);
 
     List<Autori> find();
+
+    void update(long id, Autori autori);
 }

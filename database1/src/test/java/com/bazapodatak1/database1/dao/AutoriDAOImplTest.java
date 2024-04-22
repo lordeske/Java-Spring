@@ -61,4 +61,18 @@ public class AutoriDAOImplTest {
     }
 
 
+
+
+    @Test
+    public void testThatUpdateSQL()
+    {
+        Autori autori = TestDataUtil.createTestAutor();
+        underTest.update(autori.getId(),autori);
+
+        verify(jdbcTemplate).update("UPDATE autori SET id = ? , ime = ?, godine = ? WHERE id= ?",
+                1L,"Mihajlo",17,1L);
+
+    }
+
+
 }
