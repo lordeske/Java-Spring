@@ -1,8 +1,6 @@
 package doomen;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "knjige")
+@Table(name = "autori")
 public class Autori {
 
     @Id
-
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "autor_id_seq")
     private Long id;
     private String ime;
 

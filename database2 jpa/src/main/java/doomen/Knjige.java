@@ -15,12 +15,11 @@ import lombok.NoArgsConstructor;
 public class Knjige {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "autor_id_seq")
     private String isbn;
     private String naslov;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "autor_id")
-    private Autori autor_id;
+    @JoinColumn(name = "autor_id", referencedColumnName = "id")
+    private Autori autor;
 
 }
