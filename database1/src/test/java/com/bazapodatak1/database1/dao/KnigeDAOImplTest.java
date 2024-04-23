@@ -50,9 +50,6 @@ public class KnigeDAOImplTest {
                 eq("1-123-456-7"));
 
 
-
-
-
     }
 
     @Test
