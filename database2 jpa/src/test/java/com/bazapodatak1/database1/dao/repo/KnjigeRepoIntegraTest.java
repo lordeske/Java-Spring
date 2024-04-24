@@ -1,13 +1,13 @@
 
 package com.bazapodatak1.database1.dao.repo;
 
-import DAO.impl.AutorDAOImpl;
-import DAO.impl.KnjigaDAOImpl;
+
 import com.bazapodatak1.database1.dao.TestDataUtil;
 import com.bazapodatak1.database1.repo.AutorRepo;
 import com.bazapodatak1.database1.repo.KnjigaRepo;
 import doomen.Autori;
 import doomen.Knjige;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +18,17 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-
+@Nested
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class KnjigeRepoIntegraTest {
 
-    private KnjigaRepo underTest;
+    private final KnjigaRepo underTest;
 
 
     @Autowired
@@ -49,39 +50,33 @@ public class KnjigeRepoIntegraTest {
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(knjige);
     }
-}
 
-/*
+
     @Test
-    public void testThatKnigeMoguBitiKreiraneIVracenee()
-    {
+    public void testThatKnigeMoguBitiKreiraneIVracenee() {
         Autori autori = TestDataUtil.createTestAutor();
-        autorDAO.create(autori);
+        Knjige knjiga1 = TestDataUtil.createTestKnjigaA(autori);
 
-        Knjige knjiga1= TestDataUtil.createTestKnjigaA();
-        knjiga1.setAutor_id(autori.getId());
-        underTest.create(knjiga1);
-
-        Knjige knjiga2= TestDataUtil.createTestKnjigaA();
-        knjiga2.setAutor_id(autori.getId());
-        underTest.create(knjiga2);
-
-        Knjige knjiga3= TestDataUtil.createTestKnjigaA();
-        knjiga2.setAutor_id(autori.getId());
-        underTest.create(knjiga3);
+        underTest.save(knjiga1);
+        Knjige knjiga2 = TestDataUtil.createTestKnjigaA(autori);
 
 
-        List<Knjige> result = underTest.find();
+        underTest.save(knjiga2);
+
+        Knjige knjiga3 = TestDataUtil.createTestKnjigaA(autori);
+
+        underTest.save(knjiga3);
+
+
+        Iterable<Knjige> result = underTest.findAll();
 
         assertThat(result).hasSize(3)
-                .contains(knjiga1,knjiga2,knjiga3);
-
-
-
-
+                .contains(knjiga1, knjiga2, knjiga3);
 
 
     }
+
+
 
 
     @Test
@@ -89,16 +84,16 @@ public class KnjigeRepoIntegraTest {
     {
 
         Autori autori = TestDataUtil.createTestAutor();
-        autorDAO.create(autori);
 
-        Knjige knjiga1= TestDataUtil.createTestKnjigaA();
-        knjiga1.setAutor_id(autori.getId());
-        underTest.create(knjiga1);
+
+        Knjige knjiga1= TestDataUtil.createTestKnjigaA(autori);
+
+        underTest.save(knjiga1);
 
         knjiga1.setNaslov("Mali Mrav");
-        underTest.update(knjiga1.getIsbn(), knjiga1);
+        underTest.save( knjiga1);
 
-        Optional<Knjige> reslt = underTest.findOne(knjiga1.getIsbn());
+        Optional<Knjige> reslt = underTest.findById(knjiga1.getIsbn());
         assertThat(reslt).isPresent();
         assertThat(reslt).get().isEqualTo(knjiga1);
 
@@ -116,17 +111,17 @@ public class KnjigeRepoIntegraTest {
     {
 
         Autori autori = TestDataUtil.createTestAutor();
-        autorDAO.create(autori);
-
-        Knjige knjiga1= TestDataUtil.createTestKnjigaA();
-        knjiga1.setAutor_id(autori.getId());
-        underTest.create(knjiga1);
 
 
-        underTest.delete(knjiga1.getIsbn());
+        Knjige knjiga1= TestDataUtil.createTestKnjigaA(autori);
+
+        underTest.save(knjiga1);
 
 
-        Optional <Knjige> result= underTest.findOne(knjiga1.getIsbn());
+        underTest.deleteById(knjiga1.getIsbn());
+
+
+        Optional <Knjige> result= underTest.findById(knjiga1.getIsbn());
 
         assertThat(result)
                 .isEmpty();
@@ -143,4 +138,7 @@ public class KnjigeRepoIntegraTest {
 }
 
 
- */
+
+
+
+

@@ -42,34 +42,35 @@ public class AutorRepoIntegraTest {
         assertThat(result.get()).isEqualTo(autor);
     }
 
-    /*
+
     @Test
     public void testThatMultyAutorsCanBeCreatedAndCalled()
     {
         Autori autoriA = TestDataUtil.createTestAutorA() ;
-        underTest.create(autoriA);
+        underTest.save(autoriA);
         Autori autoriB = TestDataUtil.createTestAutorB() ;
-        underTest.create(autoriB);
+        underTest.save(autoriB);
         Autori autoriC = TestDataUtil.createTestAutorC() ;
-        underTest.create(autoriC);
+        underTest.save(autoriC);
 
 
-        List<Autori> autoriLista = underTest.find();
+        Iterable<Autori> autoriLista = underTest.findAll();
         assertThat(autoriLista).hasSize
                 (3).contains(autoriA,autoriB,autoriC);
 
     }
 
+
     @Test
     public void testThatAutorIsUp()
     {
         Autori autoriA = TestDataUtil.createTestAutorA() ;
-        underTest.create(autoriA);
+        underTest.save(autoriA);
 
         autoriA.setIme("Milovan");
-        underTest.update(autoriA.getId(),autoriA);
+        underTest.save(autoriA);
 
-        Optional <Autori> result  = underTest.findOne(autoriA.getId());
+        Optional <Autori> result  = underTest.findById(autoriA.getId());
 
         assertThat(result).isPresent();
         assertThat(result).get().isEqualTo(autoriA);
@@ -78,15 +79,16 @@ public class AutorRepoIntegraTest {
 
     }
 
+
     @Test
     public void testAutorDelete()
     {
         Autori autoriA = TestDataUtil.createTestAutorA() ;
-        underTest.create(autoriA);
+        underTest.save(autoriA);
 
-        underTest.delete(autoriA.getId());
+        underTest.deleteById(autoriA.getId());
 
-         Optional <Autori> result = underTest.findOne(autoriA.getId());
+         Optional <Autori> result = underTest.findById(autoriA.getId());
          assertThat(result).isEmpty();
 
 
@@ -94,7 +96,7 @@ public class AutorRepoIntegraTest {
 
 
 
-     */
+
 
 
 }

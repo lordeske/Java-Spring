@@ -15,21 +15,21 @@ public final class TestDataUtil {
                 .ime("Mihajlo")
                 .godine(17).build();
     }
-  static Autori createTestAutorA() {
+  public static Autori createTestAutorA() {
         return Autori.builder()
                 .id(1l)
                 .ime("Sinisa")
                 .godine(20).build();
     }
 
-    static Autori createTestAutorB() {
+    public static Autori createTestAutorB() {
         return Autori.builder()
                 .id(1l)
                 .ime("Miljan")
                 .godine(25).build();
     }
 
-    static Autori createTestAutorC() {
+    public static Autori createTestAutorC() {
         return Autori.builder()
                 .id(1l)
                 .ime("Djole")
@@ -44,7 +44,7 @@ public final class TestDataUtil {
                 .autor(autori)
                 .build();
     }
-    static Knjige createTestKnjigaA(final Autori autori) {
+    public static Knjige createTestKnjigaA(final Autori autori) {
         return Knjige.builder().
                 isbn("1-123-456-8")
                 .naslov("Avlijski glupan")
