@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.useDefaultDateFormatsOnly;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -94,6 +95,40 @@ public class AutorRepoIntegraTest {
 
     }
 
+    @Test
+    public void TestKojiDobijaAutoreGodinaManjeeOd()
+    {
+
+        Autori autor = TestDataUtil.createTestAutor();
+        underTest.save(autor);
+        Autori autor1 = TestDataUtil.createTestAutorB();
+        underTest.save(autor1);
+        Autori autor2 = TestDataUtil.createTestAutorC();
+        underTest.save(autor2);
+
+          Iterable <Autori> result = underTest.godineManjeOd(18);
+          assertThat(result).containsExactly(autor2,autor1);
+
+
+    }
+
+
+    @Test
+    public void TestKojiDobijaAutreVeceOd()
+    {
+
+        Autori autor = TestDataUtil.createTestAutor();
+        underTest.save(autor);
+        Autori autor1 = TestDataUtil.createTestAutorB();
+        underTest.save(autor1);
+        Autori autor2 = TestDataUtil.createTestAutorC();
+        underTest.save(autor2);
+
+
+         Iterable <Autori> result = underTest.nadjiAutoreVeceOd(15);
+         assertThat(result).containsExactly(autor);
+
+    }
 
 
 
