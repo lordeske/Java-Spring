@@ -1,9 +1,11 @@
-/*
+
 package com.bazapodatak1.database1.dao.repo;
 
 import DAO.impl.AutorDAOImpl;
 import DAO.impl.KnjigaDAOImpl;
 import com.bazapodatak1.database1.dao.TestDataUtil;
+import com.bazapodatak1.database1.repo.AutorRepo;
+import com.bazapodatak1.database1.repo.KnjigaRepo;
 import doomen.Autori;
 import doomen.Knjige;
 import org.junit.jupiter.api.Test;
@@ -16,7 +18,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -24,35 +25,33 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class KnjigeDAOImplIntegrationTest {
+public class KnjigeRepoIntegraTest {
 
-    private KnjigaDAOImpl underTest;
-    private AutorDAOImpl autorDAO;
+    private KnjigaRepo underTest;
+
 
     @Autowired
-    public KnjigeDAOImplIntegrationTest(KnjigaDAOImpl underTest, AutorDAOImpl autorDAO) {
+    public KnjigeRepoIntegraTest(KnjigaRepo underTest) {
         this.underTest = underTest;
-        this.autorDAO = autorDAO;
+
     }
 
 
     @Test
-    public void testThatKnigaCanBeCreated()
-    {
+    public void testThatKnigaCanBeCreated() {
         Autori autori = TestDataUtil.createTestAutor();
-        autorDAO.create(autori);
+        Knjige knjige = TestDataUtil.createTestKnjiga(autori);
 
 
-        Knjige knjige = TestDataUtil.createTestKnjiga();
-        knjige.setAutor_id(autori.getId());
-        underTest.create(knjige);
+        underTest.save(knjige);
 
-        Optional<Knjige> result = underTest.findOne(knjige.getIsbn());
+        Optional<Knjige> result = underTest.findById(knjige.getIsbn());
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(knjige);
     }
+}
 
-
+/*
     @Test
     public void testThatKnigeMoguBitiKreiraneIVracenee()
     {

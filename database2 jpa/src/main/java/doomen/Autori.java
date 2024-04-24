@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Autori {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "autor_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String ime;
 

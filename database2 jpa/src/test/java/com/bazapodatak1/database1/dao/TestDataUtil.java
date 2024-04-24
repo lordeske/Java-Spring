@@ -9,7 +9,7 @@ public final class TestDataUtil {
     {
 
     }
-    static Autori createTestAutor() {
+    public static Autori createTestAutor() {
         return Autori.builder()
                 .id(1l)
                 .ime("Mihajlo")
@@ -37,25 +37,25 @@ public final class TestDataUtil {
     }
 
 
-    static Knjige createTestKnjiga() {
+    public static Knjige createTestKnjiga(final Autori autori) {
         return Knjige.builder().
                 isbn("1-123-456-7")
                 .naslov("Mracna Carobnica")
-                .autor_id(1L)
+                .autor(autori)
                 .build();
     }
-    static Knjige createTestKnjigaA() {
+    static Knjige createTestKnjigaA(final Autori autori) {
         return Knjige.builder().
                 isbn("1-123-456-8")
                 .naslov("Avlijski glupan")
-                .autor_id(1L)
+                .autor(autori)
                 .build();
     }
-    static Knjige createTestKnjigaB() {
+    static Knjige createTestKnjigaB(final Autori autori) {
         return Knjige.builder().
                 isbn("1-123-456-9")
                 .naslov("Borac sa macem")
-                .autor_id(1L)
+                .autor(autori)
                 .build();
     }
 
