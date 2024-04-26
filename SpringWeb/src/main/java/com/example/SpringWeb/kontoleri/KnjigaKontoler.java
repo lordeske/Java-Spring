@@ -27,7 +27,7 @@ public class KnjigaKontoler {
 
     }
 
-    @PostMapping
+    @PostMapping(path = "/knjige")
     public Knjiga napraviKnjigu(@RequestBody final Knjiga knjiga)
     {
         log.info("Dobio si knjigu" + knjiga.toString());
