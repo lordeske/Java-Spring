@@ -1,15 +1,13 @@
 package com.eske.database.mappers;
 
+import com.eske.database.domain.Entities.AuthorEntity;
+import com.eske.database.domain.dto.AuthorDto;
+
 public interface Mapper<A,B> {
 
-    A mapTo(B b);
+    B mapTo(A a);
 
-    B mapFrom(A a);
-
-
-
-
-
+    A mapFrom(B b);
 
 
 

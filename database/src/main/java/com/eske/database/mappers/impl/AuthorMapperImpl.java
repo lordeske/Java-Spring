@@ -4,7 +4,9 @@ import com.eske.database.domain.Entities.AuthorEntity;
 import com.eske.database.domain.dto.AuthorDto;
 import com.eske.database.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AuthorMapperImpl implements Mapper<AuthorEntity, AuthorDto> {
 
 
@@ -17,13 +19,12 @@ public class AuthorMapperImpl implements Mapper<AuthorEntity, AuthorDto> {
 
 
     @Override
-    public AuthorEntity mapTo(AuthorDto authorDto) {
-        return  modelMapper.map(authorDto, AuthorEntity.class);
-
+    public AuthorDto mapTo(AuthorEntity authorEntity) {
+        return modelMapper.map(authorEntity, AuthorDto.class);
     }
 
     @Override
-    public AuthorDto mapFrom(AuthorEntity authorEntity) {
-        return  modelMapper.map(authorEntity,AuthorDto.class);
+    public AuthorEntity mapFrom(AuthorDto authorDto) {
+        return modelMapper.map(authorDto, AuthorEntity.class);
     }
 }
