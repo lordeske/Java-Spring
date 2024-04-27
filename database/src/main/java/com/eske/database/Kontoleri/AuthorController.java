@@ -5,6 +5,8 @@ import com.eske.database.domain.Entities.AuthorEntity;
 import com.eske.database.domain.dto.AuthorDto;
 import com.eske.database.mappers.Mapper;
 import com.eske.database.services.AuthorServices;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,11 +28,11 @@ public class AuthorController {
 
 
     @PostMapping(path = "/authors")
-    public  AuthorDto createAuthor(@RequestBody AuthorDto author)
+    public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto author)
     {
        AuthorEntity authorEntity = mapper.mapFrom(author);
        AuthorEntity savedAuthor = authorServices.createAuthor(authorEntity);
-       return  mapper.mapTo(savedAuthor);
+       return  new ResponseEntity<>(mapper.mapTo(savedAuthor), HttpStatus.CREATED);
 
 
     }
