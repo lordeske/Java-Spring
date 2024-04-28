@@ -2,6 +2,7 @@ package com.eske.database.kontoleri;
 
 import com.eske.database.TestDataUtil;
 import com.eske.database.domain.Entities.AuthorEntity;
+import com.eske.database.services.AuthorServices;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -28,14 +29,17 @@ public class AuthorControllerInegrationTest {
 
     private ObjectMapper objectMapper;
 
-
+    private AuthorServices authorServices;
 
     @Autowired
-    public AuthorControllerInegrationTest(MockMvc mockMvc,ObjectMapper objectMapper)
+    public AuthorControllerInegrationTest(AuthorServices authorServices, MockMvc mockMvc,ObjectMapper objectMapper)
     {
         this.mockMvc= mockMvc;
         this.objectMapper = objectMapper;
+        this.authorServices = authorServices;
     }
+
+
 
 
     @Test
@@ -73,6 +77,23 @@ public class AuthorControllerInegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Thomas Cronin"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(44));
+
+
+    }
+
+    @Test
+    public void TestReadALlAuthors() throws Exception {
+
+        authorServices.createAuthor(TestDataUtil.createTestAuthorB());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/authors")
+                .contentType(MediaType.APPLICATION_JSON))
+
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Thomas Cronin"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(44));
+
+
 
 
     }

@@ -2,6 +2,8 @@ package com.eske.database;
 
 import com.eske.database.domain.Entities.AuthorEntity;
 import com.eske.database.domain.Entities.BookEntity;
+import com.eske.database.domain.dto.AuthorDto;
+import com.eske.database.domain.dto.BookDto;
 
 public final class TestDataUtil {
     private TestDataUtil(){
@@ -38,6 +40,14 @@ public final class TestDataUtil {
                 .isbn("978-1-2345-6789-0")
                 .title("The Shadow in the Attic")
                 .authorEntity(authorEntity)
+                .build();
+    }
+
+    public static BookDto createTestBookEntityADTO(final AuthorDto AuthorDto) {
+        return BookDto.builder()
+                .isbn("978-1-2345-6789-0")
+                .title("The Shadow in the Attic")
+                .author(AuthorDto)
                 .build();
     }
 
