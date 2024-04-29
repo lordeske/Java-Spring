@@ -7,13 +7,11 @@ import com.eske.database.mappers.Mapper;
 import com.eske.database.services.AuthorServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,6 +48,20 @@ public class AuthorController {
         return authors.stream()
                 .map(mapper::mapTo)
                 .collect(Collectors.toList());
+    }
+
+
+    @GetMapping(path = "/authors/{id}")
+    public ResponseEntity<AuthorDto> getAuthor(@PathVariable ("id") Long id)
+    {
+
+       Optional<AuthorEntity> foundAuthor = authorServices.findOne(id);
+        return foundAuthor.map(authorEntity -> {
+            AuthorDto autor = mapper.mapTo(authorEntity);
+            return new ResponseEntity<>(autor, HttpStatus.OK);
+        }).orElse(
+                new ResponseEntity<>(HttpStatus.NOT_FOUND)
+        );
     }
 
 

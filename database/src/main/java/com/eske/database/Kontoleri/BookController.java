@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 public class BookController {
 
@@ -30,6 +33,16 @@ public class BookController {
          BookEntity bookEntity  = bookMapper.mapFrom(bookDto);
          BookEntity savedBook  =bookServiceImp.createBook(isbn,bookEntity);
          return new ResponseEntity<>(bookMapper.mapTo(savedBook), HttpStatus.CREATED);
+
+    }
+
+
+    @GetMapping(path = "books")
+    public List<BookDto> allBooks ()
+    {
+        List<BookEntity> books = bookServiceImp.findAll();
+        return books.stream().map(bookMapper::mapTo)
+                .collect(Collectors.toList());
 
     }
 

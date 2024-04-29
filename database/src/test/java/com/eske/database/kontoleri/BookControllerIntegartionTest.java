@@ -3,7 +3,10 @@ package com.eske.database.kontoleri;
 
 import com.eske.database.TestDataUtil;
 import com.eske.database.domain.Entities.AuthorEntity;
+import com.eske.database.domain.Entities.BookEntity;
 import com.eske.database.domain.dto.BookDto;
+import com.eske.database.repositories.BookRepository;
+import com.eske.database.services.BookService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -27,11 +30,14 @@ public class BookControllerIntegartionTest {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
+    private BookService bookService;
+
     @Autowired
-    public BookControllerIntegartionTest(MockMvc mockMvc,ObjectMapper objectMapper)
+    public BookControllerIntegartionTest( BookService bookServic,MockMvc mockMvc,ObjectMapper objectMapper)
     {
         this.mockMvc= mockMvc;
         this.objectMapper =  new ObjectMapper();
+        this.bookService = bookServic;
     }
 
 
@@ -68,6 +74,35 @@ public class BookControllerIntegartionTest {
 
 
 
+    }
+
+    @Test
+    public void TestReadALlBooks() throws Exception {
+
+      mockMvc.perform(MockMvcRequestBuilders.get("/books")
+              .contentType(MediaType.APPLICATION_JSON) )
+
+              .andExpect(
+                      MockMvcResultMatchers.status().isOk()
+              );
+    }
+
+    @Test
+    public void TestReadALlBooksRespBody() throws Exception {
+
+       BookEntity bookEntity = TestDataUtil.createTestBookEntityA(null);
+       bookService.createBook(bookEntity.getIsbn(),bookEntity);
+
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/books")
+                        .contentType(MediaType.APPLICATION_JSON) )
+
+
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].isbn").value("978-1-2345-6789-0"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("The Shadow in the Attic"))        ;
+
+
+                ;
     }
 
 

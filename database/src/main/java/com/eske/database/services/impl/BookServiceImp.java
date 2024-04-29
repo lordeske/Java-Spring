@@ -5,6 +5,11 @@ import com.eske.database.repositories.BookRepository;
 import com.eske.database.services.BookService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 @Service
 public class BookServiceImp implements BookService  {
 
@@ -21,6 +26,13 @@ public class BookServiceImp implements BookService  {
     public BookEntity createBook(String isbn, BookEntity bookEntity) {
         bookEntity.setIsbn(isbn);
        return  bookRepository.save(bookEntity);
+
+    }
+
+    public List<BookEntity> findAll() {
+
+      return StreamSupport.stream(bookRepository.findAll().spliterator(), false)
+               .collect(Collectors.toList());
 
     }
 }

@@ -99,6 +99,43 @@ public class AuthorControllerInegrationTest {
     }
 
 
+    @Test
+    public void testFindAuthorStatus() throws Exception {
+
+        authorServices.createAuthor(TestDataUtil.createTestAuthorB());
+
+
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/authors/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+
+
+    @Test
+    public void testFindAuthorID() throws Exception {
+
+
+        AuthorEntity authorEntity = TestDataUtil.createTestAuthorEntityA();
+        authorServices.createAuthor(authorEntity);
+
+
+
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/authors/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Abigail Rose"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(80));
+
+
+    }
+
+
 
 
 
