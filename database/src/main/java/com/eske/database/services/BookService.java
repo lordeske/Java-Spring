@@ -4,6 +4,7 @@ import com.eske.database.domain.Entities.BookEntity;
 import com.eske.database.domain.dto.BookDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookService {
 
@@ -11,6 +12,8 @@ public interface BookService {
 
 
     List<BookEntity> findAll();
+
+    Optional<BookEntity> findOne(String isbn);
 
     ;
 }

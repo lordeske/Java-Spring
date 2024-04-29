@@ -107,4 +107,38 @@ public class BookControllerIntegartionTest {
 
 
 
+    @Test
+    public void  TestBookExistStatus() throws Exception {
+        BookEntity testBook = TestDataUtil.createTestBookEntityA(null);
+        bookService.createBook(testBook.getIsbn(),testBook);
+
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/books/"+testBook.getIsbn())
+                .contentType(MediaType.APPLICATION_JSON))
+
+
+                .andExpect(
+                        MockMvcResultMatchers.status().isOk()
+                );
+
+    }
+
+    @Test
+    public void  TestBookExistJSONNotEXist() throws Exception {
+        BookEntity testBook = TestDataUtil.createTestBookEntityA(null);
+
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/books/"+testBook.getIsbn())
+                        .contentType(MediaType.APPLICATION_JSON))
+
+
+                .andExpect(
+                        MockMvcResultMatchers.status().isNotFound()
+                );
+
+    }
+
+
+
+
 }
