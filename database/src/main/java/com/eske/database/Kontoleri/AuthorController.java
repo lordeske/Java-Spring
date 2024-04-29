@@ -8,7 +8,6 @@ import com.eske.database.services.AuthorServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +33,7 @@ public class AuthorController {
     public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto author)
     {
        AuthorEntity authorEntity = mapper.mapFrom(author);
-       AuthorEntity savedAuthor = authorServices.createAuthor(authorEntity);
+       AuthorEntity savedAuthor = authorServices.save(authorEntity);
        return  new ResponseEntity<>(mapper.mapTo(savedAuthor), HttpStatus.CREATED);
 
 
@@ -65,6 +64,28 @@ public class AuthorController {
     }
 
 
+    @PutMapping(path = "/authors/{id}")
+    public ResponseEntity<AuthorDto> fullUpdateAuthor(@PathVariable ("id") Long id,
+                                                      @RequestBody AuthorDto authorDto)
+    {
+      if (!authorServices.isExist(id))
+      {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+
+      authorDto.setId(id);
+      AuthorEntity authorEntity=  mapper.mapFrom(authorDto);
+
+     AuthorEntity savedAuthot = authorServices.save(authorEntity);
+     return new ResponseEntity<>(mapper.mapTo(savedAuthot),HttpStatus.OK);
 
 
-}
+    }
+
+
+
+
+
+
+
+    }

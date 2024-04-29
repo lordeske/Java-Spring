@@ -8,10 +8,12 @@ import java.util.Optional;
 public interface AuthorServices {
 
 
-    AuthorEntity createAuthor(AuthorEntity authorEntity);
+    AuthorEntity save(AuthorEntity authorEntity);
 
 
     List<AuthorEntity> findAll();
 
     Optional<AuthorEntity> findOne(Long id);
+
+    boolean isExist(Long id);
 }
