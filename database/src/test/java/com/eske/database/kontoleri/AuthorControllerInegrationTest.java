@@ -4,7 +4,6 @@ import com.eske.database.TestDataUtil;
 import com.eske.database.domain.Entities.AuthorEntity;
 import com.eske.database.domain.dto.AuthorDto;
 import com.eske.database.services.AuthorServices;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -139,7 +138,7 @@ public class AuthorControllerInegrationTest {
 
     @Test
     public void Test404UpdateAutor() throws Exception {
-        AuthorDto test = TestDataUtil.createTestAutorEntityA();
+        AuthorDto test = TestDataUtil.createTestAutorDTDA();
         String json = objectMapper.writeValueAsString(test);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/authors/99")
@@ -190,6 +189,52 @@ public class AuthorControllerInegrationTest {
 
 
 
+    @Test
+    public void paricalUdpateExist() throws Exception {
+
+        AuthorEntity testAuthor = TestDataUtil.createTestAuthorEntityA();
+        AuthorEntity saved = authorServices.save(testAuthor);
+
+        AuthorEntity testAuthor2 = TestDataUtil.createTestAuthorB();
+
+        testAuthor2.setId(saved.getId());
+        testAuthor2.setName("Mile Radoje");
+        String json  = objectMapper.writeValueAsString(testAuthor2);
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/authors/"+saved.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+
+    }
+
+
+    @Test
+    public void paricalUdpateExistValues() throws Exception {
+
+        AuthorEntity testAuthor = TestDataUtil.createTestAuthorEntityA();
+        AuthorEntity saved = authorServices.save(testAuthor);
+
+        AuthorDto testAuthor2 = TestDataUtil.createTestAutorDTDA();
+
+
+        testAuthor2.setName("Mile Radoje");
+        testAuthor2.setAge(80);
+        String json  = objectMapper.writeValueAsString(testAuthor2);
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/authors/"+saved.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(saved.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Mile Radoje"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(saved.getAge()));
+
+
+
+    }
 
 
 
