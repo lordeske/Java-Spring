@@ -4,6 +4,7 @@ package com.eske.database.kontoleri;
 import com.eske.database.TestDataUtil;
 import com.eske.database.domain.Entities.AuthorEntity;
 import com.eske.database.domain.Entities.BookEntity;
+import com.eske.database.domain.dto.AuthorDto;
 import com.eske.database.domain.dto.BookDto;
 import com.eske.database.repositories.BookRepository;
 import com.eske.database.services.BookService;
@@ -206,6 +207,58 @@ public class BookControllerIntegartionTest {
 
 
     }
+
+
+    @Test
+    public void paricalUdpateExistValues() throws Exception {
+
+
+        BookEntity testBook = TestDataUtil.createTestBookEntityA(null);
+        bookService.createBook(testBook.getIsbn(), testBook);
+
+
+        BookDto testBookEnt = TestDataUtil.createTestBookEntityADTO(null);
+        testBookEnt.setTitle("NOVI");
+
+        String json = objectMapper.writeValueAsString(testBookEnt);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/books/"+testBook.getIsbn())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+
+
+    }
+
+
+
+    @Test
+    public void paricalUdpateExistJSON() throws Exception {
+
+
+        BookEntity testBook = TestDataUtil.createTestBookEntityA(null);
+        bookService.createBook(testBook.getIsbn(), testBook);
+
+
+        BookDto testBookEnt = TestDataUtil.createTestBookEntityADTO(null);
+        testBookEnt.setTitle("NOVI");
+        testBookEnt.setIsbn(testBook.getIsbn());
+
+        String json = objectMapper.writeValueAsString(testBookEnt);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/books/"+testBook.getIsbn())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+        ).andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(testBook.getIsbn()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("NOVI"));
+
+
+
+    }
+
+
 
 
 

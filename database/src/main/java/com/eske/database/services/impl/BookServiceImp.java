@@ -46,4 +46,22 @@ public class BookServiceImp implements BookService  {
     public boolean isExist(String isbn) {
         return bookRepository.existsById(isbn);
     }
+
+    @Override
+    public BookEntity parcialUpdate(String isbn, BookEntity bookEntity) {
+
+        bookEntity.setIsbn(isbn);
+
+       return bookRepository.findById(isbn).map(
+                existingBook -> {
+
+                    Optional.ofNullable(bookEntity.getTitle()).ifPresent(existingBook::setIsbn);
+
+                    return bookRepository.save(existingBook);
+
+                }
+        ).orElseThrow(()-> new RuntimeException("\"Knjig ne postoji \"") );
+
+
+    }
 }
