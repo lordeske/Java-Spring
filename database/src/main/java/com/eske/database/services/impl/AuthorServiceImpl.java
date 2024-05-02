@@ -4,6 +4,8 @@ package com.eske.database.services.impl;
 import com.eske.database.domain.Entities.AuthorEntity;
 import com.eske.database.repositories.AuthorRepository;
 import com.eske.database.services.AuthorServices;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,5 +74,10 @@ public class AuthorServiceImpl implements AuthorServices {
 
         authorRepository.deleteById(id);
 
+    }
+
+    @Override
+    public Page<AuthorEntity> findALL(Pageable pageable) {
+     return   authorRepository.findAll(pageable);
     }
 }

@@ -5,6 +5,8 @@ import com.eske.database.domain.Entities.AuthorEntity;
 import com.eske.database.domain.dto.AuthorDto;
 import com.eske.database.mappers.Mapper;
 import com.eske.database.services.AuthorServices;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,12 +43,11 @@ public class AuthorController {
 
 
     @GetMapping(path = "/authors")
-    public List<AuthorDto> listAuthors()
+    public Page<AuthorDto> listAuthors(Pageable pageable)
     {
-        List<AuthorEntity> authors = authorServices.findAll();
-        return authors.stream()
-                .map(mapper::mapTo)
-                .collect(Collectors.toList());
+        Page<AuthorEntity> authors = authorServices.findALL(pageable);
+
+        return  authors.map(mapper::mapTo);
     }
 
 

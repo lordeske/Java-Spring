@@ -4,6 +4,8 @@ import com.eske.database.domain.Entities.BookEntity;
 import com.eske.database.domain.dto.BookDto;
 import com.eske.database.mappers.Mapper;
 import com.eske.database.services.impl.BookServiceImp;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,10 +51,10 @@ public class BookController {
 
 
     @GetMapping(path = "books")
-    public List<BookDto> allBooks() {
-        List<BookEntity> books = bookServiceImp.findAll();
-        return books.stream().map(bookMapper::mapTo)
-                .collect(Collectors.toList());
+    public Page<BookDto> allBooks(Pageable pageable) {
+        Page<BookEntity> books = bookServiceImp.findALL(pageable);
+
+        return   books.map(bookMapper::mapTo);
 
     }
 

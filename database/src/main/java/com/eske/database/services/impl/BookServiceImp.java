@@ -3,6 +3,8 @@ package com.eske.database.services.impl;
 import com.eske.database.domain.Entities.BookEntity;
 import com.eske.database.repositories.BookRepository;
 import com.eske.database.services.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -70,5 +72,10 @@ public class BookServiceImp implements BookService  {
 
         bookRepository.deleteById(isbn);
 
+    }
+
+    @Override
+    public Page<BookEntity> findALL(Pageable pageable) {
+       return  bookRepository.findAll(pageable);
     }
 }
