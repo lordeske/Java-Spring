@@ -236,6 +236,30 @@ public class AuthorControllerInegrationTest {
 
     }
 
+    @Test
+    public void testDeleteAuthor() throws Exception {
+
+        AuthorEntity autr = TestDataUtil.createTestAuthorEntityA();
+        authorServices.save(autr);
+
+
+
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/authors/"+autr.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+
+
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+
+
+
+
+
+
+    }
+
 
 
 

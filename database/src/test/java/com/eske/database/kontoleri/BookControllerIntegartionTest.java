@@ -6,6 +6,7 @@ import com.eske.database.domain.Entities.AuthorEntity;
 import com.eske.database.domain.Entities.BookEntity;
 import com.eske.database.domain.dto.AuthorDto;
 import com.eske.database.domain.dto.BookDto;
+import com.eske.database.mappers.Mapper;
 import com.eske.database.repositories.BookRepository;
 import com.eske.database.services.BookService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,18 +29,21 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 public class BookControllerIntegartionTest {
 
+
+    private Mapper<BookEntity, BookDto> mapper;
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
     private BookService bookService;
 
     @Autowired
-    public BookControllerIntegartionTest( BookService bookServic,MockMvc mockMvc,ObjectMapper objectMapper)
-    {
-        this.mockMvc= mockMvc;
-        this.objectMapper =  new ObjectMapper();
+    public BookControllerIntegartionTest( BookService bookServic,MockMvc mockMvc,ObjectMapper objectMapper,Mapper<BookEntity, BookDto> mapper) {
+        this.mockMvc = mockMvc;
+        this.objectMapper = new ObjectMapper();
         this.bookService = bookServic;
+        this.mapper=mapper;
     }
+
 
 
     @Test
@@ -241,7 +245,7 @@ public class BookControllerIntegartionTest {
         bookService.createBook(testBook.getIsbn(), testBook);
 
 
-        BookDto testBookEnt = TestDataUtil.createTestBookEntityADTO(null);
+        BookDto testBookEnt = mapper.mapTo(TestDataUtil.createTestBookEntityA(null));
         testBookEnt.setTitle("NOVI");
         testBookEnt.setIsbn(testBook.getIsbn());
 
@@ -257,6 +261,30 @@ public class BookControllerIntegartionTest {
 
 
     }
+
+    @Test
+    public void testDeleteBook() throws Exception {
+
+        BookEntity book = TestDataUtil.createTestBookEntityA(null);
+        BookEntity book1  = bookService.createBook(book.getIsbn(),book);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/books/"+book1.getIsbn())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
 
 
 

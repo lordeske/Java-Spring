@@ -16,47 +16,40 @@ import java.util.stream.Collectors;
 public class BookController {
 
 
-    private Mapper<BookEntity,BookDto> bookMapper;
+    private Mapper<BookEntity, BookDto> bookMapper;
     private BookServiceImp bookServiceImp;
 
 
-    public BookController(Mapper<BookEntity,BookDto> bookMapper,BookServiceImp bookServiceImp)
-    {
-        this.bookMapper= bookMapper;
+    public BookController(Mapper<BookEntity, BookDto> bookMapper, BookServiceImp bookServiceImp) {
+        this.bookMapper = bookMapper;
         this.bookServiceImp = bookServiceImp;
     }
 
     @PutMapping(path = "/books/{isbn}")
     public ResponseEntity<BookDto> createUpdateBook(@PathVariable("isbn") String isbn,
-                                                    @RequestBody BookDto bookDto)
-    {
+                                                    @RequestBody BookDto bookDto) {
 
-         BookEntity bookEntity  = bookMapper.mapFrom(bookDto);
-         boolean bookExist = bookServiceImp.isExist(isbn);
-         BookEntity savedBook  =bookServiceImp.createBook(isbn,bookEntity);
-         BookDto bookDto1= bookMapper.mapTo(savedBook);
+        BookEntity bookEntity = bookMapper.mapFrom(bookDto);
+        boolean bookExist = bookServiceImp.isExist(isbn);
+        BookEntity savedBook = bookServiceImp.createBook(isbn, bookEntity);
+        BookDto bookDto1 = bookMapper.mapTo(savedBook);
 
 
-        if (bookExist)
-         {
+        if (bookExist) {
 
-             return  new ResponseEntity<>(bookDto1, HttpStatus.OK);
-         }
-         else
-         {
+            return new ResponseEntity<>(bookDto1, HttpStatus.OK);
+        } else {
 
-             return new ResponseEntity<>(bookDto1, HttpStatus.CREATED);
+            return new ResponseEntity<>(bookDto1, HttpStatus.CREATED);
 
-         }
-
+        }
 
 
     }
 
 
     @GetMapping(path = "books")
-    public List<BookDto> allBooks ()
-    {
+    public List<BookDto> allBooks() {
         List<BookEntity> books = bookServiceImp.findAll();
         return books.stream().map(bookMapper::mapTo)
                 .collect(Collectors.toList());
@@ -65,40 +58,52 @@ public class BookController {
 
 
     @GetMapping(path = "books/{isbn}")
-    public ResponseEntity<BookDto> findOneBook(@PathVariable ("isbn") String isbn)
-    {
+    public ResponseEntity<BookDto> findOneBook(@PathVariable("isbn") String isbn) {
 
-        Optional<BookEntity> book =  bookServiceImp.findOne(isbn);
+        Optional<BookEntity> book = bookServiceImp.findOne(isbn);
 
-       return book.map(BookEntity -> {
+        return book.map(BookEntity -> {
             BookDto bookDto = bookMapper.mapTo(BookEntity);
-            return new ResponseEntity<>(bookDto , HttpStatus.OK);
+            return new ResponseEntity<>(bookDto, HttpStatus.OK);
         }).orElse(
-                new  ResponseEntity<>(HttpStatus.NOT_FOUND)
+                new ResponseEntity<>(HttpStatus.NOT_FOUND)
         );
 
     }
 
     @PatchMapping(path = "/books/{isbn}")
-    public ResponseEntity <BookDto> parcialUpdateBook (
-            @PathVariable ("isbn") String isbn,
+    public ResponseEntity<BookDto> parcialUpdateBook(
+            @PathVariable("isbn") String isbn,
             @RequestBody BookDto bookDto
-    )
-    {
-        if(!bookServiceImp.isExist(isbn))
-        {
-            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    ) {
+        if (!bookServiceImp.isExist(isbn)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
 
-        BookEntity bookEntity =  bookMapper.mapFrom(bookDto);
+        BookEntity bookEntity = bookMapper.mapFrom(bookDto);
 
-         BookEntity updatedBook =  bookServiceImp.parcialUpdate(isbn, bookEntity);
+        BookEntity updatedBook = bookServiceImp.parcialUpdate(isbn, bookEntity);
 
-         return new ResponseEntity<>(bookMapper.mapTo(updatedBook), HttpStatus.OK);
+        return new ResponseEntity<>(bookMapper.mapTo(updatedBook), HttpStatus.OK);
 
     }
 
+
+    @DeleteMapping(path = "/books/{id}")
+    public ResponseEntity deleteBook(
+            @PathVariable("isbn") String isbn
+    )
+    {
+
+        bookServiceImp.delete(isbn);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+
+
+
+    }
 
 
 
