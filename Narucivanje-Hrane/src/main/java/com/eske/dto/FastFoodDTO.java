@@ -13,11 +13,11 @@ import java.util.List;
 public class FastFoodDTO {
 
 
+    private Long fastFoodID;
     private String ime;
 
     @Column(length = 1000)
     private List<String> slike;
 
     private String opis;
-    private Long fastFoodID;
 }
