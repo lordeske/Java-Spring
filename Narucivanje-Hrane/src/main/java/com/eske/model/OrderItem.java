@@ -31,9 +31,6 @@ public class OrderItem {
     private String openingHours;
 
 
-    @OneToMany(mappedBy = "items", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order> orderList = new ArrayList<>();
-
 
 
 }
