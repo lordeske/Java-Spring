@@ -3,6 +3,7 @@ package com.eske.service;
 import com.eske.model.USER_ROLE;
 import com.eske.model.User;
 import com.eske.repo.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,12 +19,11 @@ import java.util.Optional;
 @Service
 public class CustomerUserDetailsService implements UserDetailsService {
 
+
+    @Autowired
     private UserRepo userRepo;
 
-    public CustomerUserDetailsService(UserRepo userRepo)
-    {
-        this.userRepo = userRepo;
-    }
+
 
 
 
