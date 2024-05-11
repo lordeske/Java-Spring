@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @RestController
@@ -51,7 +53,7 @@ public class AuthController {
     }
 
 
-    @PostMapping("/singup")
+    @PostMapping("/signup")
     public ResponseEntity<AuthResponse> createUserHandler(
             @RequestBody User user
             )
@@ -99,7 +101,7 @@ public class AuthController {
 
 
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public ResponseEntity<AuthResponse> loginUser(
             @RequestBody LoginReq loginReq
             )
@@ -111,10 +113,16 @@ public class AuthController {
 
         Authentication authentication = authenticate(username,password);
 
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        String role = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
+
         String jwt = jwtProvider.generateToken(authentication);
         AuthResponse authResponse = new AuthResponse();
         authResponse.setJwt(jwt);
         authResponse.setMessage("Logovanje uspesno");
+        authResponse.setRole(USER_ROLE.valueOf(role));
+
+
 
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
 
@@ -123,7 +131,7 @@ public class AuthController {
 
 
 
-        
+
     }
 
     private Authentication authenticate(String username, String password) {

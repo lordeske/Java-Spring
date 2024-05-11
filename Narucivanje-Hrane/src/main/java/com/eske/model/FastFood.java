@@ -14,19 +14,19 @@
     @Entity
     @NoArgsConstructor
     @AllArgsConstructor
-    @Table(name = "fast_food")
+
     public class FastFood {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        private  Long OrderID;
+        private  Long fastfoodID;
 
         @OneToOne
         private User owner;
 
 
         private String fastFoodName;
-        private String desc;
+        private String description;
 
         @OneToOne
         private Adresa fastFoodAdress;
