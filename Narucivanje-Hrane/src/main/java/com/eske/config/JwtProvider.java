@@ -54,11 +54,9 @@ public class JwtProvider {
         t = t.substring(7);
 
         Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(t).getBody();
-        
 
 
-
-        return t;
+        return String.valueOf(claims.get("email"));
     }
 
 }
