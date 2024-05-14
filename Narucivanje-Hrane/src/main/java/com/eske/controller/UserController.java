@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/users")
 public class UserController {
 
     @Autowired
@@ -22,14 +22,19 @@ public class UserController {
 
 
     @GetMapping(path = "/profile")
-    public ResponseEntity<Optional<User>> findUserByJWTToken(
-            @RequestHeader ("Authorization") String jwt
+    public ResponseEntity<User> findUserByJWTToken(
+            @RequestHeader("Authorization") String jwt
     ) throws Exception {
-        Optional<User> user = userService.findUserByJWTToken(jwt);
+        Optional<User> userOptional = userService.findUserByJWTToken(jwt);
+        User user = userOptional.orElseThrow(() -> new UserNotFoundException("Korisnik nije pronađen"));
 
         return new ResponseEntity<>(user, HttpStatus.OK);
-
-
-
     }
+
+    public class UserNotFoundException extends RuntimeException {
+        public UserNotFoundException(String message) {
+            super(message);
+        }
+    }
+
 }
