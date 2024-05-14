@@ -44,39 +44,40 @@ public class Config {
                 .cors(cors-> cors.configurationSource(corsConfigurationSource()));
 
 
-        return null ;
+        return http.build() ;
+
     }
 
 
-    private CorsConfigurationSource corsConfigurationSource()
-    {
+        private CorsConfigurationSource corsConfigurationSource()
+        {
 
 
-        return  new CorsConfigurationSource() {
-            @Override
-            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                CorsConfiguration cfg = new CorsConfiguration();
+            return  new CorsConfigurationSource() {
+                @Override
+                public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                    CorsConfiguration cfg = new CorsConfiguration();
 
-                cfg.setAllowedOrigins(List.of(
-                        "http://localhost:3000"
-                ));
+                    cfg.setAllowedOrigins(List.of(
+                            "http://localhost:3000"
+                    ));
 
 
-                cfg.setAllowedMethods(
-                        Collections.singletonList("*")
-                );
+                    cfg.setAllowedMethods(
+                            Collections.singletonList("*")
+                    );
 
-                cfg.setAllowCredentials(true);
+                    cfg.setAllowCredentials(true);
 
-                cfg.setAllowedHeaders(Collections.singletonList("*"));
+                    cfg.setAllowedHeaders(Collections.singletonList("*"));
 
-                cfg.setExposedHeaders(Arrays.asList("Authorization"));
+                    cfg.setExposedHeaders(Arrays.asList("Authorization"));
 
-                cfg.setMaxAge(3600L);
-                return  cfg;
-            }
-        };
-    }
+                    cfg.setMaxAge(3600L);
+                    return  cfg;
+                }
+            };
+        }
 
 
     @Bean

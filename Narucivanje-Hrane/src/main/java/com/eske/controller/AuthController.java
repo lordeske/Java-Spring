@@ -21,10 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -53,8 +50,8 @@ public class AuthController {
     }
 
 
-    @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> createUserHandler(
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> createUser(
             @RequestBody User user
             )
     {
@@ -67,7 +64,7 @@ public class AuthController {
             createdUser.setEmail(user.getEmail());
             createdUser.setFullIme(user.getFullIme());
             createdUser.setRole(user.getRole());
-            createdUser.setRole(USER_ROLE.valueOf(passwordEncoder.encode(user.getPassword())));
+            createdUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
 
             User savedUser = userRepo.save(createdUser);
@@ -101,7 +98,7 @@ public class AuthController {
 
 
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginUser(
             @RequestBody LoginReq loginReq
             )
@@ -133,6 +130,14 @@ public class AuthController {
 
 
     }
+
+    @GetMapping(path = "/eske")
+    public String funckije()
+    {
+        return "cao";
+    }
+
+
 
     private Authentication authenticate(String username, String password) {
 
