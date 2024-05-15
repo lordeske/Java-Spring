@@ -27,7 +27,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(path = "/auth")
 public class AuthController {
 
 
