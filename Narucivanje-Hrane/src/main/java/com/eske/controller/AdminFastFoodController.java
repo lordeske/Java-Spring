@@ -70,7 +70,7 @@ public class AdminFastFoodController {
 
          if(userOptional.isPresent())
          {
-
+             User user = userOptional.get();
              FastFood fastFood  = fastFoodService.updateFastFood(id,req);
 
              return new ResponseEntity<>(fastFood,HttpStatus.CREATED);
@@ -92,6 +92,7 @@ public class AdminFastFoodController {
     ) throws Exception {
         Optional<User> userOptional = userService.findUserByJWTToken(jwt);
         if (userOptional.isPresent()) {
+            User user = userOptional.get();
             fastFoodService.deleteFastFood(id);
             return ResponseEntity.noContent().build();
         } else {
@@ -109,6 +110,7 @@ public class AdminFastFoodController {
         Optional<User> userOptional = userService.findUserByJWTToken(jwt);
         if (userOptional.isPresent())
         {
+            User user = userOptional.get();
             FastFood fastFood = fastFoodService.upadateFastFoodStatus(id);
 
             return  new ResponseEntity<>(fastFood,HttpStatus.CREATED);
@@ -121,6 +123,29 @@ public class AdminFastFoodController {
 
     }
 
+
+
+    @GetMapping(path = "/user")
+    public ResponseEntity<FastFood> findFastFoodByUserId(
+            @RequestHeader ("Authorization") String jwt
+    ) throws Exception {
+        Optional<User> userOptional = userService.findUserByJWTToken(jwt);
+        if (userOptional.isPresent())
+        {
+            User user = userOptional.get();
+
+            FastFood fastFood = fastFoodService.getFastFoodBYUserId(user.getUserID());
+
+            return  new ResponseEntity<>(fastFood,HttpStatus.CREATED);
+
+        }
+        else
+        {
+            throw new UnauthorizedException("Ne valja token");
+        }
+
+
+    }
 
 
 
