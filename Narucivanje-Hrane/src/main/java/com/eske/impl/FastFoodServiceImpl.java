@@ -6,6 +6,7 @@ import com.eske.model.FastFood;
 import com.eske.model.User;
 import com.eske.repo.AddressRepo;
 import com.eske.repo.FastFoodRepo;
+import com.eske.repo.UserRepo;
 import com.eske.req.CreateFastFoodREQ;
 import com.eske.service.FastFoodService;
 import com.eske.service.UserService;
@@ -23,6 +24,9 @@ public class FastFoodServiceImpl implements FastFoodService {
 
     @Autowired
     private FastFoodRepo fastFoodRepo;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @Autowired
     private AddressRepo addressRepo;
@@ -108,22 +112,72 @@ public class FastFoodServiceImpl implements FastFoodService {
     }
 
     @Override
-    public List<FastFood> searchFastFoodID(Long fastFoodID) {
-        return null;
-    }
+    public FastFood searchFastFoodID(Long fastFoodID) {
+
+        return fastFoodRepo.findById(fastFoodID)
+                .orElseThrow(() -> new EntityNotFoundException("Ne postoji taj FastFood sa ID: " + fastFoodID));}
 
     @Override
     public FastFood getFastFoodBYUserId(Long UserID) {
-        return null;
+
+       return fastFoodRepo.findhByOwnerId(UserID)
+                .orElseThrow(()-> new EntityNotFoundException("Nema vlasnika restorana sa IDjem " + UserID));
+
+
     }
 
     @Override
     public FastFoodDTO addToFav(Long fastFoodID, User user) {
-        return null;
+
+        FastFoodDTO fastFoodDTO = new FastFoodDTO();
+
+        Optional<FastFood> fastFoodOpt = fastFoodRepo.findById(fastFoodID);
+
+        if(fastFoodOpt.isPresent())
+        {
+            FastFood fastFood = fastFoodOpt.get();
+
+            fastFoodDTO.setOpis(fastFood.getDescription());
+            fastFoodDTO.setIme(fastFood.getFastFoodName());
+            fastFoodDTO.setSlike(fastFood.getOrderListImages());
+            fastFoodDTO.setFastFoodID(fastFood.getFastfoodID());
+
+            if(user.getOmiljeno().contains(fastFoodDTO))
+            {
+                user.getOmiljeno().remove(fastFoodDTO);
+
+
+            }
+            else
+            {
+                user.getOmiljeno().add(fastFoodDTO);
+
+            }
+
+        }
+        userRepo.save(user);
+        return  fastFoodDTO;
+
+
+
     }
 
     @Override
     public FastFood upadateFastFoodStatus(Long id) {
-        return null;
+
+       Optional<FastFood> fastFoodOptional = fastFoodRepo.findById(id);
+
+       if(fastFoodOptional.isPresent())
+       {
+           FastFood fastFood = fastFoodOptional.get();
+
+           fastFood.setOpen(!fastFood.getOpen());
+           return fastFoodRepo.save(fastFood);
+
+       }
+       else
+       {
+           throw  new EntityNotFoundException("Nema restorana sa IDjem : " + id);
+       }
     }
 }

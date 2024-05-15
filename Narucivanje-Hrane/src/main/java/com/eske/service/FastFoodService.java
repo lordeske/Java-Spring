@@ -22,7 +22,7 @@ public interface FastFoodService {
     public List<FastFood> allFastFoods ();
 
     public  List<FastFood> searchFastFood(String FastFoodName);
-    public  List<FastFood> searchFastFoodID(Long fastFoodID);
+    public  FastFood searchFastFoodID(Long fastFoodID);
 
 
     public FastFood getFastFoodBYUserId(Long UserID);
