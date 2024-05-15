@@ -5,6 +5,7 @@ import com.eske.model.Adresa;
 import com.eske.model.ContactInfo;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -16,6 +17,7 @@ public class CreateFastFoodREQ {
     private Adresa adresa;
     private ContactInfo contactInfo;
     private List<String> images;
+
 
 
 
