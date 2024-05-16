@@ -141,22 +141,45 @@ public class FastFoodServiceImpl implements FastFoodService {
             fastFoodDTO.setIme(fastFood.getFastFoodName());
             fastFoodDTO.setSlike(fastFood.getOrderListImages());
             fastFoodDTO.setFastFoodID(fastFood.getFastfoodID());
+            fastFoodDTO.setFastFoodID(fastFoodID);
 
-            if(user.getOmiljeno().contains(fastFoodDTO))
+
+            Boolean isFav = false;
+
+            List<FastFoodDTO> omiljene = user.getOmiljeno();
+
+            for(FastFoodDTO omiljeno : omiljene)
             {
-                user.getOmiljeno().remove(fastFoodDTO);
+                if(omiljeno.getFastFoodID().equals(fastFoodID))
+                {
+                    isFav = true;
+                    break;
+                }
+            }
 
+            /// PROVJERITI !!!!!!!!!!!!!!
 
+            if(isFav)
+            {
+                omiljene.removeIf(omiljeno -> omiljeno.getFastFoodID().equals(fastFoodID));
             }
             else
             {
-                user.getOmiljeno().add(fastFoodDTO);
-
+                omiljene.add(fastFoodDTO);
             }
 
+            userRepo.save(user);
+            return fastFoodDTO;
+
+
+
+
         }
-        userRepo.save(user);
-        return  fastFoodDTO;
+        else
+        {
+            throw  new EntityNotFoundException("Nema restorana sa IDjem : " + fastFoodID);
+        }
+
 
 
 
