@@ -13,7 +13,7 @@ public interface FoodSerice {
 
         public Food createFood(CreateFoodReq req, Category category, FastFood fastFood);
 
-        public Void deleteFood(Long foodID);
+        public void deleteFood(Long foodID);
 
         public List<Food> getFoodFromFastFood(Long fastFoodID, boolean isVege, String foodCategory);
 
