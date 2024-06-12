@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collation = "recenzije")
+@Document(collection = "recenzije")
 @NoArgsConstructor
 @AllArgsConstructor
 
