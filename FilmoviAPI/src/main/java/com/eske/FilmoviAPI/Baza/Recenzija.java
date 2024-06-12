@@ -13,7 +13,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Recenzija {
 
     private ObjectId id;
-    private String tijelo;
 
+    private String komentar;
+
+
+
+    public Recenzija(String komentar) {
+        this.komentar = komentar;
+    }
 
 }

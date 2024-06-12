@@ -28,7 +28,7 @@ public class Film {
     private String poster;
     private List<String> pozadine;
 
-    @DocumentReference()
+    @DocumentReference
     private List<Recenzija> idRecenzija;
 
 
