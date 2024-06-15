@@ -23,10 +23,10 @@ public class JPAUserService implements UserDetailsService {
 
         var user = userRepo.findUserByUsername(username);
 
-        user.map(SecuUser::new)
+       return user.map(SecuUser::new)
                 .orElseThrow(() -> new UsernameNotFoundException("Korisnik nije pronadjen: " + username ));
 
 
-        return null;
+
     }
 }

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 
 @Entity
 @Table(name = "korisnici")
@@ -20,6 +22,12 @@ public class User {
     private Integer id;
     private String username;
     private String lozinka;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "korisnici_prava", joinColumns = @JoinColumn(name = "idkorisnika"),
+    inverseJoinColumns = @JoinColumn(name = "idpravaa"))
+    private Set<Authority> authorities;
 
 
 }
