@@ -1,12 +1,25 @@
 package com.less3.less3.Konfiguracija.Sekjuriti.Auth;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.security.auth.Subject;
 import java.util.Collection;
 
+@AllArgsConstructor
+@Setter
+@Getter
 public class CustomAuth implements Authentication {
+
+
+    private  boolean authentication;
+
+    private  String kljuc;
+
+
     @Override
     public String getName() {
         return null;

@@ -1,5 +1,6 @@
 package com.less3.less3.Konfiguracija.Sekjuriti.Filter;
 
+import com.less3.less3.Konfiguracija.Sekjuriti.Auth.CustomAuth;
 import com.less3.less3.Konfiguracija.Sekjuriti.Menadzers.CustomAuthMenadzer;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +23,11 @@ public class AutentifikacijskiFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        var a = customAuthMenadzer.authenticate(null);
+        String kljuc = String.valueOf(request.getHeader("kljuc"));
+
+        CustomAuth ca = new CustomAuth(false,kljuc);
+
+        var a = customAuthMenadzer.authenticate(ca);
 
 
         if(a.isAuthenticated())
