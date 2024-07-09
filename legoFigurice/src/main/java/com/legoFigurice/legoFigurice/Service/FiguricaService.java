@@ -12,12 +12,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import static com.legoFigurice.legoFigurice.Konstante.Konst.SLIKA_LOKACIJA;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -60,7 +65,7 @@ public class FiguricaService {
     {
         Figurica figurica = getFigurica(idFigurice);
 
-        String urlSlike = null;
+        String urlSlike = slikaFunkcije.apply(idFigurice, file);
 
         figurica.setUrlSlike(urlSlike);
 
@@ -69,21 +74,33 @@ public class FiguricaService {
         return urlSlike;
     }
 
-    private final BiFunction<String,MultipartFile, String> slikaFunkcije = (id,Slika) -> {
+    private  final Function<String, String> ekstenzijaFajla = imeFajla ->   /// Dobijanje ekstenzije
+            Optional.of(imeFajla).filter(ime -> ime.contains("."))
+                    .map(ime -> "." + ime.substring(imeFajla.lastIndexOf(".")+ 1 )).orElse(".jpg");
+
+    private final BiFunction<String,MultipartFile, String> slikaFunkcije = (id,slika) -> {
+
+        String imeFajla = id + ekstenzijaFajla.apply(slika.getOriginalFilename());
+
         try
         {
-            Path lokacijaSlike = Paths.get("").toAbsolutePath().normalize(); // Dobijanje lokacije
+            Path lokacijaSlike = Paths.get(SLIKA_LOKACIJA).toAbsolutePath().normalize(); // Dobijanje lokacije
 
             if (!Files.exists(lokacijaSlike))  // Da li postoji
             {
                 Files.createDirectories(lokacijaSlike);
             }
+
+            Files.copy(slika.getInputStream(), lokacijaSlike.resolve(id + ekstenzijaFajla.apply(slika.getOriginalFilename())));
+            return ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/figurice/slika/"+ imeFajla ).toUriString();
         }
         catch (Exception e)
         {
-                throw new RuntimeException("Nije moguce sacuvati sliku")
+                throw new RuntimeException("Nije moguce sacuvati sliku");
         }
-    }
+    };
 
 
 }
