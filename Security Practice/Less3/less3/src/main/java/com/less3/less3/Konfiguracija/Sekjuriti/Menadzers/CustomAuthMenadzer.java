@@ -3,6 +3,7 @@ package com.less3.less3.Konfiguracija.Sekjuriti.Menadzers;
 import com.less3.less3.Konfiguracija.Sekjuriti.Provajder.AuthProvajder;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
@@ -15,9 +16,12 @@ public class CustomAuthMenadzer implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if(authProvajder.supports(authentication))
+        if(authProvajder.supports(authentication.getClass()))
         {
             return authProvajder.authenticate(authentication);
         }
+
+        else
+            throw  new BadCredentialsException("Greksa");
     }
 }
