@@ -15,6 +15,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.legoFigurice.legoFigurice.Konstante.Konst.SLIKA_LOKACIJA;
+import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
+import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @RestController
 @RequestMapping("/figurice")
@@ -47,7 +49,7 @@ public class FiguriceKontroler {
         return ResponseEntity.ok().body(figuricaService.dodajSliku(idFigurice,file));
     }
 
-    @GetMapping(path = "/fotografija/{filename}")
+    @GetMapping(path = "/fotografija/{filename}" , produces = {IMAGE_PNG_VALUE, IMAGE_JPEG_VALUE})
     public byte[] dobijSliku(@PathVariable ("filename") String fileName) throws IOException {
         return Files.readAllBytes(Paths.get(SLIKA_LOKACIJA+ fileName));
     }
