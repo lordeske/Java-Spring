@@ -31,20 +31,20 @@ public class FiguriceKontroler {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Figurica>> dobiSveFigurice(@RequestParam(value = "strana", defaultValue = "0") Integer strana,
-                                                          @RequestParam(value = "velicina", defaultValue = "10") Integer velicina) {
+    public ResponseEntity<Page<Figurica>> dobiSveFigurice(@RequestParam(value = "page", defaultValue = "0") Integer strana,
+                                                          @RequestParam(value = "size", defaultValue = "10") Integer velicina) {
         return ResponseEntity.ok().body(figuricaService.getAllFigurice(strana, velicina));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Figurica> dobijFiguricu (@RequestParam (value = "id") String id)
+    @GetMapping("/{idFigurice}")
+    public ResponseEntity<Figurica> dobijFiguricu (@PathVariable (value = "idFigurice") String id)
     {
         return ResponseEntity.ok().body(figuricaService.getFigurica(id));
     }
 
     @PutMapping("/slika")
-    public ResponseEntity<String> uploadSliku(@RequestParam("id") String idFigurice,
-                                              @RequestParam("fajl")MultipartFile file)
+    public ResponseEntity<String> uploadSliku(@RequestParam("idFigurice") String idFigurice,
+                                              @RequestParam("file")MultipartFile file)
     {
         return ResponseEntity.ok().body(figuricaService.dodajSliku(idFigurice,file));
     }
@@ -52,6 +52,12 @@ public class FiguriceKontroler {
     @GetMapping(path = "/fotografija/{filename}" , produces = {IMAGE_PNG_VALUE, IMAGE_JPEG_VALUE})
     public byte[] dobijSliku(@PathVariable ("filename") String fileName) throws IOException {
         return Files.readAllBytes(Paths.get(SLIKA_LOKACIJA+ fileName));
+    }
+
+    @DeleteMapping(path = "/{idFigurice}")
+    public ResponseEntity<Void> obrisiFiguricu(@PathVariable("idFigurice") String idFigurice) {
+        figuricaService.obrisiFiguricu(idFigurice);
+        return ResponseEntity.noContent().build();  // Vraća 204 No Content status kod
     }
 
 

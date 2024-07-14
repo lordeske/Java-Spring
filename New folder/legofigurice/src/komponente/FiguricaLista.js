@@ -7,7 +7,7 @@ const FiguricaLista = ({data, trenutnaStrana, getAllFigurice}) => {
         {data?.content?.length == 0 && <div>Nema figurica, mozete dodati novu</div>}
 
         <ul className='contact__list'>
-         {data?.content?.length > 0 && data.content.map((figurica) => <Figurica figurica ={figurica} key={figurica}></Figurica>)}
+         {data?.content?.length > 0 && data.content.map((figurica) => <Figurica figurica ={figurica} key={figurica.idFigurice}></Figurica>)}
         </ul>
 
 

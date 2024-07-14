@@ -58,9 +58,9 @@ public class FiguricaService {
 
 
     // Brisanje figurice
-    public void obrisiFiguricu(Figurica figurica)
+    public void obrisiFiguricu(String idFigurice)
     {
-        figuricaRepo.delete(figurica);
+        figuricaRepo.deleteById(idFigurice);
     }
 
 
