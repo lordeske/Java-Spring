@@ -3,18 +3,20 @@ import { Link } from 'react-router-dom'
 
 const Figurica = ({figurica}) => {
   return (
-    <Link  to={`/figurice/${figurica.idFigurice}`}
-     className='contact_item'>
-        <div className='contact_header'>
-            <div className='contact__image'>
-                <img src={figurica.url_slike} alt={figurica.nazivFigurice}></img>
-
+    <Link  to={`/figurice/${figurica.idFigurice}`} className="contact__item">
+            <div className="contact__header">
+                <div className="contact__image">
+                    <img src={figurica.urlSlike} alt={figurica.nazivFigurice}  />
+                </div>
+                <div className="contact__details">
+                    <p className="contact_name">{figurica.nazivFigurice} </p>
+                </div>
             </div>
-            <div className='contact__details'>  
-                <p className='contact_name'>{figurica.kategorijaFigurice}</p>
-                <p className='contact_title'>{figurica.materijalFigurice}</p>
+            <div className="contact__body">
+                <p>{figurica.materijalFigurice}</p>
+                <p>{figurica.kategorijaFigurice}</p>
             </div>
-        </div>
+       
     </Link>
   )
 }
