@@ -14,7 +14,7 @@ export async function sveFigurice(page = 0, size = 10)   /// dobijanje figurica,
     return await axios.get(`${API_URL}?page=${page}&size=${size}`)
 } 
 
-export async function gerFigurica(idFigurice)   /// dobijanje jedne figurice
+export async function getFigurica(idFigurice)   /// dobijanje jedne figurice
 {
     return await axios.get(`${API_URL}/${idFigurice}`)
 } 

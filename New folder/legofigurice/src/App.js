@@ -4,6 +4,7 @@ import FiguricaLista from './komponente/FiguricaLista';
 import { useEffect, useRef, useState } from 'react';
 import { sveFigurice,kreirajFiguricu } from './api/figuriceServise';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import FiguricaDetalji from './komponente/FiguricaDetalji';
 
 function App() {
 
@@ -53,6 +54,12 @@ function App() {
 
 
 
+  const azurirajFiguricu = async (id) =>
+  {
+
+  }
+
+
   const unesi = (event) => {
     setObjekatFigurice({ ...objekatFigurice, [event.target.name]: event.target.value });
     console.log(objekatFigurice)
@@ -72,6 +79,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/figurice" />} />
             <Route path="/figurice" element={<FiguricaLista data={data} trenutnaStrana={trenutnaStrana} dobijSveFigurice={dobijSveFigurice} />} />
+            <Route path='/figurice/:id' element={<FiguricaDetalji azurirajFiguricu = {azurirajFiguricu} />} />
           </Routes>
         </div>
       </main>
