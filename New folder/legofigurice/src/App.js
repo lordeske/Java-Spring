@@ -2,7 +2,7 @@ import './App.css';
 import Header from './komponente/Header';
 import FiguricaLista from './komponente/FiguricaLista';
 import { useEffect, useRef, useState } from 'react';
-import { sveFigurice,kreirajFiguricu } from './api/figuriceServise';
+import { sveFigurice,kreirajFiguricu, azurirajSliku } from './api/figuriceServise';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import FiguricaDetalji from './komponente/FiguricaDetalji';
 
@@ -10,6 +10,7 @@ function App() {
 
   const modelRef = useRef();
   const slikaRef = useRef();
+  const fajlRef = useRef();
 
   //use statovi
   const [data, setData] = useState({});
@@ -40,8 +41,25 @@ function App() {
     try
     {
       const {data} = await kreirajFiguricu(objekatFigurice);
-      console.log(data);
-      slikaRef.current.value = null;
+      const formData = new FormData();
+      formData.append('file', fajl,  fajl.name);
+      formData.append("idFigurice", data.idFigurice);
+      const {data: urlSlike} = await azurirajSliku(formData);
+      console.log(urlSlike);
+      toggleModel(false)
+      dobijSveFigurice();
+
+      setObjekatFigurice({
+        "nazivFigurice": "",
+        "urlSlike": "",
+        "kategorijaFigurice": "",
+        "materijalFigurice": ""
+      })
+      setFajl(undefined);
+      fajlRef.current.value = null;
+      
+
+      
 
     }
     catch(err)
@@ -107,7 +125,7 @@ function App() {
               </div>
               <div className="file-input">
                 <span className="details">Slika figurice</span>
-                <input type="file" name='urlSlike' required  onChange={(e) =>setFajl(e.target.files[0])}/>
+                <input type="file" name='urlSlike' required ref={fajlRef} onChange={(e) =>setFajl(e.target.files[0])}/>
               </div>
             </div>
             <div className="form_footer">
