@@ -2,28 +2,30 @@ import './App.css';
 import Header from './komponente/Header';
 import FiguricaLista from './komponente/FiguricaLista';
 import { useEffect, useRef, useState } from 'react';
-import { sveFigurice,kreirajFiguricu, azurirajSliku } from './api/figuriceServise';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { sveFigurice, kreirajFiguricu, azurirajSliku, obrisiFiguricu } from './api/figuriceServise';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import FiguricaDetalji from './komponente/FiguricaDetalji';
+
 
 function App() {
 
   const modelRef = useRef();
   const slikaRef = useRef();
   const fajlRef = useRef();
+  const navigacija = useNavigate();
 
   //use statovi
   const [data, setData] = useState({});
   const [fajl, setFajl] = useState(undefined);
   const [trenutnaStrana, setTrenutnaStrana] = useState(0);
   const [objekatFigurice, setObjekatFigurice] = useState({   // pracenje naseg objekta
-      "nazivFigurice": "",
-      "urlSlike": "",
-      "kategorijaFigurice": "",
-      "materijalFigurice": ""
+    "nazivFigurice": "",
+    "urlSlike": "",
+    "kategorijaFigurice": "",
+    "materijalFigurice": ""
   });
 
-  const dobijSveFigurice = async (strana=0, velicina=10) => {
+  const dobijSveFigurice = async (strana = 0, velicina = 10) => {
     try {
       setTrenutnaStrana(strana);
       const { data } = await sveFigurice(strana, velicina);
@@ -34,17 +36,37 @@ function App() {
     }
   }
 
-  const kreirajNovuFiguricu = async (e) =>
-  {
+
+  const fetchObrisiFiguricu = async (id) => {
+
+    try {
+      await obrisiFiguricu(id);
+      console.log(`Obrisana figurica sa ID: ${id}`);
+      dobijSveFigurice();
+      navigacija("/");
+
+    }
+    catch (err) {
+      console.log(err)
+    }
+
+
+
+
+
+
+  }
+
+
+  const kreirajNovuFiguricu = async (e) => {
     e.preventDefault();
- 
-    try
-    {
-      const {data} = await kreirajFiguricu(objekatFigurice);
+
+    try {
+      const { data } = await kreirajFiguricu(objekatFigurice);
       const formData = new FormData();
-      formData.append('file', fajl,  fajl.name);
+      formData.append('file', fajl, fajl.name);
       formData.append("idFigurice", data.idFigurice);
-      const {data: urlSlike} = await azurirajSliku(formData);
+      const { data: urlSlike } = await azurirajSliku(formData);
       console.log(urlSlike);
       toggleModel(false)
       dobijSveFigurice();
@@ -57,13 +79,12 @@ function App() {
       })
       setFajl(undefined);
       fajlRef.current.value = null;
-      
 
-      
+
+
 
     }
-    catch(err)
-    {
+    catch (err) {
       console.log(err)
 
     }
@@ -72,8 +93,18 @@ function App() {
 
 
 
-  const azurirajFiguricu = async (id) =>
+  const azurirajFotografiju = async (formData) =>
   {
+    try {
+     
+      const { data: urlSlike } = await azurirajSliku(formData);
+      
+
+    }
+    catch (err) {
+      console.log(err)
+
+    }
 
   }
 
@@ -97,7 +128,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/figurice" />} />
             <Route path="/figurice" element={<FiguricaLista data={data} trenutnaStrana={trenutnaStrana} dobijSveFigurice={dobijSveFigurice} />} />
-            <Route path='/figurice/:id' element={<FiguricaDetalji azurirajFiguricu = {azurirajFiguricu} />} />
+            <Route path='/figurice/:id' element={<FiguricaDetalji  fetchObrisiFiguricu = {fetchObrisiFiguricu} azurirajFotografiju = {azurirajFotografiju}/>} />
           </Routes>
         </div>
       </main>
@@ -105,7 +136,7 @@ function App() {
       <dialog ref={modelRef} className="modal" id="modal">
         <div className="modal__header">
           <h3>Nova figurica</h3>
-          <i onClick={() => toggleModel(false)} className='bi bi-x-lg'></i> 
+          <i onClick={() => toggleModel(false)} className='bi bi-x-lg'></i>
         </div>
         <div className="divider"></div>
         <div className="modal__body">
@@ -125,7 +156,7 @@ function App() {
               </div>
               <div className="file-input">
                 <span className="details">Slika figurice</span>
-                <input type="file" name='urlSlike' required ref={fajlRef} onChange={(e) =>setFajl(e.target.files[0])}/>
+                <input type="file" name='urlSlike' required ref={fajlRef} onChange={(e) => setFajl(e.target.files[0])} />
               </div>
             </div>
             <div className="form_footer">
