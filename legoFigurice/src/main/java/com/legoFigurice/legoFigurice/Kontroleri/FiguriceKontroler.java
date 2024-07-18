@@ -49,7 +49,7 @@ public class FiguriceKontroler {
         return ResponseEntity.ok().body(figuricaService.dodajSliku(idFigurice,file));
     }
 
-    @GetMapping(path = "/fotografija/{filename}" , produces = {IMAGE_PNG_VALUE, IMAGE_JPEG_VALUE})
+    @PutMapping(path = "/fotografija/{filename}" , produces = {IMAGE_PNG_VALUE, IMAGE_JPEG_VALUE})
     public byte[] dobijSliku(@PathVariable ("filename") String fileName) throws IOException {
         return Files.readAllBytes(Paths.get(SLIKA_LOKACIJA+ fileName));
     }

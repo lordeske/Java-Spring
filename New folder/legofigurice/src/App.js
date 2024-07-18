@@ -93,20 +93,7 @@ function App() {
 
 
 
-  const azurirajFotografiju = async (formData) =>
-  {
-    try {
-     
-      const { data: urlSlike } = await azurirajSliku(formData);
-      
-
-    }
-    catch (err) {
-      console.log(err)
-
-    }
-
-  }
+  
 
 
   const unesi = (event) => {
@@ -128,7 +115,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/figurice" />} />
             <Route path="/figurice" element={<FiguricaLista data={data} trenutnaStrana={trenutnaStrana} dobijSveFigurice={dobijSveFigurice} />} />
-            <Route path='/figurice/:id' element={<FiguricaDetalji  fetchObrisiFiguricu = {fetchObrisiFiguricu} azurirajFotografiju = {azurirajFotografiju}/>} />
+            <Route path='/figurice/:id' element={<FiguricaDetalji  fetchObrisiFiguricu = {fetchObrisiFiguricu} />} />
           </Routes>
         </div>
       </main>
