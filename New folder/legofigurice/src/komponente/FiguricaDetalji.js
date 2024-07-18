@@ -1,13 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getFigurica } from '../api/figuriceServise';
-import { azurirajSliku } from '../api/figuriceServise'; 
+import { getFigurica, azurirajSliku } from '../api/figuriceServise';
 
-function FiguricaDetalji({ fetchObrisiFiguricu }) {
+function FiguricaDetalji({ fetchObrisiFiguricu, azurirajFiguricu }) {
     const { id } = useParams();
     const inputReferenca = useRef();
 
     const [objekatFigurice, setObjekatFigurice] = useState({
+        idFigurice: id,
+        nazivFigurice: '',
+        urlSlike: '',
+        kategorijaFigurice: '',
+        materijalFigurice: ''
+    });
+    const [uredjeniObjekatFigurice, setUredjeniObjekatFigurice] = useState({
+        idFigurice: id,
         nazivFigurice: '',
         urlSlike: '',
         kategorijaFigurice: '',
@@ -20,6 +27,7 @@ function FiguricaDetalji({ fetchObrisiFiguricu }) {
         try {
             const { data } = await getFigurica(id);
             setObjekatFigurice(data);
+            setUredjeniObjekatFigurice(data); 
         } catch (err) {
             console.error("Error fetching figurica:", err);
             setError("Greska prilikom dohvatanja podataka o figurici.");
@@ -47,10 +55,17 @@ function FiguricaDetalji({ fetchObrisiFiguricu }) {
             }));
             setLoading(false);
         } catch (err) {
-            console.error(err);
+            console.error("Error updating photo:", err);
             setError("Greska prilikom ažuriranja slike.");
             setLoading(false);
         }
+    };
+
+    const onAzurirajFiguricu = async (e) => {
+        e.preventDefault();
+        await azurirajFiguricu(uredjeniObjekatFigurice);
+        setObjekatFigurice(uredjeniObjekatFigurice); 
+        fetchGetFigurica(id);
     };
 
     useEffect(() => {
@@ -58,6 +73,11 @@ function FiguricaDetalji({ fetchObrisiFiguricu }) {
             fetchGetFigurica(id);
         }
     }, [id]);
+
+    const unesi = (event) => {
+        setUredjeniObjekatFigurice({ ...uredjeniObjekatFigurice, [event.target.name]: event.target.value });
+        console.log(uredjeniObjekatFigurice);
+    };
 
     return (
         <>
@@ -77,21 +97,20 @@ function FiguricaDetalji({ fetchObrisiFiguricu }) {
                         </div>
                     </div>
                     <div className='profile__settings'>
-                    <form className="form">
+                        <form className="form" onSubmit={onAzurirajFiguricu}>
                             <div className="user-details">
                                 <div className="input-box">
                                     <span className="details">Naziv</span>
-                                    <input type="text" value={objekatFigurice.nazivFigurice}  name="name" required />
+                                    <input type="text" value={uredjeniObjekatFigurice.nazivFigurice} onChange={unesi} name="nazivFigurice" required />
                                 </div>
                                 <div className="input-box">
                                     <span className="details">Materijal Figurice</span>
-                                    <input type="text" value={objekatFigurice.materijalFigurice}  name="materijal" required />
+                                    <input type="text" value={uredjeniObjekatFigurice.materijalFigurice} onChange={unesi} name="materijalFigurice" required />
                                 </div>
                                 <div className="input-box">
                                     <span className="details">Kategorija</span>
-                                    <input type="text" value={objekatFigurice.kategorijaFigurice}  name="kategorija" required />
+                                    <input type="text" value={uredjeniObjekatFigurice.kategorijaFigurice} onChange={unesi} name="kategorijaFigurice" required />
                                 </div>
-                               
                             </div>
                             <div className="form_footer">
                                 <button type="submit" className="btn">Save</button>

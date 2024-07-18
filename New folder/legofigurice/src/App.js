@@ -3,22 +3,20 @@ import Header from './komponente/Header';
 import FiguricaLista from './komponente/FiguricaLista';
 import { useEffect, useRef, useState } from 'react';
 import { sveFigurice, kreirajFiguricu, azurirajSliku, obrisiFiguricu } from './api/figuriceServise';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import FiguricaDetalji from './komponente/FiguricaDetalji';
 
-
 function App() {
-
   const modelRef = useRef();
   const slikaRef = useRef();
   const fajlRef = useRef();
   const navigacija = useNavigate();
+  const location = useLocation();
 
-  //use statovi
   const [data, setData] = useState({});
   const [fajl, setFajl] = useState(undefined);
   const [trenutnaStrana, setTrenutnaStrana] = useState(0);
-  const [objekatFigurice, setObjekatFigurice] = useState({   // pracenje naseg objekta
+  const [objekatFigurice, setObjekatFigurice] = useState({
     "nazivFigurice": "",
     "urlSlike": "",
     "kategorijaFigurice": "",
@@ -36,27 +34,16 @@ function App() {
     }
   }
 
-
   const fetchObrisiFiguricu = async (id) => {
-
     try {
       await obrisiFiguricu(id);
       console.log(`Obrisana figurica sa ID: ${id}`);
       dobijSveFigurice();
       navigacija("/");
-
+    } catch (err) {
+      console.log(err);
     }
-    catch (err) {
-      console.log(err)
-    }
-
-
-
-
-
-
   }
-
 
   const kreirajNovuFiguricu = async (e) => {
     e.preventDefault();
@@ -79,31 +66,34 @@ function App() {
       })
       setFajl(undefined);
       fajlRef.current.value = null;
-
-
-
-
+    } catch (err) {
+      console.log(err);
     }
-    catch (err) {
-      console.log(err)
-
-    }
-
   }
 
-
-
-  
-
+  const azurirajFiguricu = async (figurica) => {
+    try {
+      const { data } = await kreirajFiguricu(figurica);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const unesi = (event) => {
     setObjekatFigurice({ ...objekatFigurice, [event.target.name]: event.target.value });
-    console.log(objekatFigurice)
+    console.log(objekatFigurice);
   }
 
   useEffect(() => {
     dobijSveFigurice();
   }, []);
+
+  useEffect(() => {
+    if (location.pathname === '/figurice') {
+      dobijSveFigurice(trenutnaStrana);
+    }
+  }, [location]);
 
   const toggleModel = (show) => show ? modelRef.current.showModal() : modelRef.current.close();
 
@@ -115,7 +105,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/figurice" />} />
             <Route path="/figurice" element={<FiguricaLista data={data} trenutnaStrana={trenutnaStrana} dobijSveFigurice={dobijSveFigurice} />} />
-            <Route path='/figurice/:id' element={<FiguricaDetalji  fetchObrisiFiguricu = {fetchObrisiFiguricu} />} />
+            <Route path='/figurice/:id' element={<FiguricaDetalji fetchObrisiFiguricu={fetchObrisiFiguricu} azurirajFiguricu={azurirajFiguricu} />} />
           </Routes>
         </div>
       </main>
