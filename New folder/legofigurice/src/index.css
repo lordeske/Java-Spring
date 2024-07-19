@@ -545,6 +545,12 @@ dialog[open] {
 	margin-bottom: 5px;
 }
 
+.fixed-size-image {
+    width: 200px; 
+    height: 200px; 
+    object-fit: cover; /* Drugi mogući vrednosti: contain, fill, none, scale-down */
+}
+
 .input-box input {
 	height: 45px;
 	width: 100%;

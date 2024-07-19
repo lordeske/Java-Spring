@@ -49,10 +49,7 @@ public class FiguriceKontroler {
         return ResponseEntity.ok().body(figuricaService.dodajSliku(idFigurice,file));
     }
 
-    @PutMapping(path = "/fotografija/{filename}" , produces = {IMAGE_PNG_VALUE, IMAGE_JPEG_VALUE})
-    public byte[] dobijSliku(@PathVariable ("filename") String fileName) throws IOException {
-        return Files.readAllBytes(Paths.get(SLIKA_LOKACIJA+ fileName));
-    }
+
 
     @DeleteMapping(path = "/{idFigurice}")
     public ResponseEntity<Void> obrisiFiguricu(@PathVariable("idFigurice") String idFigurice) {

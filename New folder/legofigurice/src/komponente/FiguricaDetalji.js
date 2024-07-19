@@ -79,6 +79,9 @@ function FiguricaDetalji({ fetchObrisiFiguricu, azurirajFiguricu }) {
         console.log(uredjeniObjekatFigurice);
     };
 
+    
+    const imagePath = objekatFigurice.urlSlike ? `/img/${objekatFigurice.urlSlike}` : '';
+
     return (
         <>
             <div>
@@ -88,12 +91,14 @@ function FiguricaDetalji({ fetchObrisiFiguricu, azurirajFiguricu }) {
                         {loading ? (
                             <p>Učitavanje...</p>
                         ) : (
-                            <img src={objekatFigurice.urlSlike} alt={objekatFigurice.nazivFigurice} />
+                            <img src={imagePath} alt={objekatFigurice.nazivFigurice} className='fixed-size-image'/>
                         )}
                         <div className='profile__metadata'>
                             <p className='profile__name'>{objekatFigurice.nazivFigurice}</p>
                             <p className='profile__muted'>Ovde mozes promijeniti sliku</p>
-                            <button className='btn' onClick={izaberiSliku}>Promijeni sliku</button>
+                            <button className='btn' onClick={izaberiSliku}>Promijeni sliku</button> 
+                            <p></p>
+                            <button style={{marginTop : "15px" , width: "100px"}} className='btn' onClick={() => fetchObrisiFiguricu(id)}>Obrisi</button>
                         </div>
                     </div>
                     <div className='profile__settings'>
@@ -113,11 +118,11 @@ function FiguricaDetalji({ fetchObrisiFiguricu, azurirajFiguricu }) {
                                 </div>
                             </div>
                             <div className="form_footer">
-                                <button type="submit" className="btn">Save</button>
+                                <button type="submit" className="btn">Sacuvaj</button>
                             </div>
                         </form>
                     </div>
-                    <button onClick={() => fetchObrisiFiguricu(id)}>Obrisi</button>
+                    
                 </div>
                 {error && <p className="error">{error}</p>}
             </div>

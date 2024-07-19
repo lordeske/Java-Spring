@@ -24,13 +24,13 @@ export async function azurirajFiguricu(figurica)   /// Azuriranje figurice
     return await axios.post(API_URL, figurica)
 } 
 
-export async function azurirajSliku(formData)   /// Kreiranje figurice
+export async function azurirajSliku(formData)   /// Azuriranje slike
 {
     return await axios.put(`${API_URL}/slika`, formData)
 } 
 
 
-export async function obrisiFiguricu(idFigurice)   /// Kreiranje figurice
+export async function obrisiFiguricu(idFigurice)   /// Obrisi figuricu
 {
     return await axios.delete(`${API_URL}/${idFigurice}`)
 } 

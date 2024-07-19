@@ -63,45 +63,46 @@ public class FiguricaService {
         figuricaRepo.deleteById(idFigurice);
     }
 
-
-    public String dodajSliku(String idFigurice, MultipartFile file)
-    {
-        Figurica figurica = getFigurica(idFigurice);
-
-        String urlSlike = slikaFunkcije.apply(idFigurice, file);
-
-        figurica.setUrlSlike(urlSlike);
-
-        figuricaRepo.save(figurica);
-
-        return urlSlike;
-    }
-
-    private  final Function<String, String> ekstenzijaFajla = imeFajla ->   /// Dobijanje ekstenzije
-            Optional.of(imeFajla).filter(ime -> ime.contains("."))
-                    .map(ime -> "." + ime.substring(imeFajla.lastIndexOf(".")+ 1 )).orElse(".jpg");
-
     private final BiFunction<String, MultipartFile, String> slikaFunkcije = (id, slika) -> {
-        String imeFajla = id + ekstenzijaFajla.apply(slika.getOriginalFilename());
+        return slika.getOriginalFilename();
+    };
+
+
+
+    public String dodajSliku(String idFigurice, MultipartFile file) {
+        if (idFigurice == null || idFigurice.isEmpty()) {
+            throw new IllegalArgumentException("ID figurice ne može biti prazan.");
+        }
+
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("Fajl ne može biti prazan.");
+        }
+
+        Figurica figurica;
+        try {
+            figurica = getFigurica(idFigurice);
+        } catch (Exception e) {
+            throw new RuntimeException("Greška prilikom preuzimanja figurice sa ID: " + idFigurice, e);
+        }
+
+        String nazivSlike;
+        try {
+            nazivSlike = slikaFunkcije.apply(idFigurice, file);
+        } catch (Exception e) {
+            throw new RuntimeException("Greška prilikom obrade slike.", e);
+        }
+
+        figurica.setUrlSlike(nazivSlike);
 
         try {
-            Path lokacijaSlike = Paths.get(SLIKA_LOKACIJA).toAbsolutePath().normalize(); // Dobijanje lokacije
-
-            if (!Files.exists(lokacijaSlike)) {  // Da li postoji
-                Files.createDirectories(lokacijaSlike);
-            }
-
-            Path ciljnaPutanja = lokacijaSlike.resolve(imeFajla);
-            Files.copy(slika.getInputStream(), ciljnaPutanja, StandardCopyOption.REPLACE_EXISTING);
-
-            return ServletUriComponentsBuilder
-                    .fromCurrentContextPath()
-                    .path("/figurice/slika/" + imeFajla).toUriString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Nije moguće sačuvati sliku: " + e.getMessage());
+            figuricaRepo.save(figurica);
+        } catch (Exception e) {
+            throw new RuntimeException("Greška prilikom snimanja figurice.", e);
         }
-    };
+
+        return nazivSlike;
+    }
+
 
 
 
